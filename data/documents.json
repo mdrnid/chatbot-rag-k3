@@ -1,0 +1,51 @@
+    [
+      {
+        "file": "kepmen_esdm_1827_2018.pdf",
+        "doc_title": "Kepmen ESDM 1827 K/30/MEM/2018",
+        "doc_type": "regulasi",
+        "tahun": 2018,
+        "status": "berlaku",
+        "topik": "peledakan",
+        "page_range": [150, 175]
+      },
+      {
+        "file": "permen_esdm_26_2018.pdf",
+        "doc_title": "Permen ESDM No. 26 Tahun 2018",
+        "doc_type": "regulasi",
+        "tahun": 2018,
+        "status": "berlaku",
+        "topik": "kaidah pertambangan"
+      },
+      {
+        "file": "perpol_17_2017.pdf",
+        "doc_title": "Perkap/Perpol No. 17 Tahun 2017",
+        "doc_type": "regulasi",
+        "tahun": 2017,
+        "status": "berlaku",
+        "topik": "bahan peledak"
+      },
+      {
+        "file": "permen_esdm_38_2014.pdf",
+        "doc_title": "Permen ESDM No. 38 Tahun 2014",
+        "doc_type": "regulasi",
+        "tahun": 2014,
+        "status": "dicabut",
+        "replaced_by": "Permen ESDM No. 26 Tahun 2018",
+        "topik": "SMKP"
+      },
+      {
+        "file": "skkni_peledakan.pdf",
+        "doc_title": "SKKNI Pengeboran/Peledakan",
+        "doc_type": "regulasi",
+        "status": "berlaku",
+        "topik": "kompetensi"
+      },
+      {
+        "file": "sop/sop_04_penanganan_misfire.md",
+        "doc_title": "SOP-BLS-04 Penanganan Misfire (fiktif)",
+        "doc_type": "sop",
+        "tahun": 2026,
+        "status": "berlaku",
+        "topik": "misfire"
+      }
+    ]

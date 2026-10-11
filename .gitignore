@@ -1,0 +1,8 @@
+    .env
+    __pycache__/
+    .pytest_cache/
+    logs/
+    data/chroma/
+    data/processed/
+    # PDF tidak di-commit (SNI berbayar tidak boleh masuk repo publik)
+    data/raw/**/*.pdf
