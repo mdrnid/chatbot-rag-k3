@@ -1,6 +1,7 @@
 """Frontend Streamlit. Jalankan: streamlit run app/streamlit_app.py"""
 import json
 import os
+import time
 
 import requests
 import streamlit as st
@@ -8,6 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_URL = os.getenv("API_URL", "http://localhost:8000")
+LLM_MODEL = os.getenv("LLM_MODEL", "OpenRouter")
 DISCLAIMER = "Chatbot ini alat bantu, bukan pengganti SOP resmi perusahaan, regulasi, maupun arahan Pengawas/KTT."
 
 st.set_page_config(page_title="Asisten K3 Peledakan", page_icon="⛑️")
@@ -40,10 +42,15 @@ def stream_events(payload: dict):
             if line and line.startswith("data: "):
                 yield json.loads(line[6:])
 
+def render_meta(sources: list[dict], latency: float | None = None) -> None:
+    render_sources(sources)
+    if latency is not None:
+        st.caption(f"⏱️ *Debug Latensi: **{latency:.2f} detik** | Model: `{LLM_MODEL}`*")
+
 for m in st.session_state.messages:
     with st.chat_message(m["role"]):
         st.markdown(m["content"])
-        render_sources(m.get("sources", []))
+        render_meta(m.get("sources", []), m.get("latency"))
 
 if question := st.chat_input("Tanya tentang K3 peledakan..."):
     history = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
@@ -53,6 +60,8 @@ if question := st.chat_input("Tanya tentang K3 peledakan..."):
 
     with st.chat_message("assistant"):
         box, text, sources = st.empty(), "", []
+        t0 = time.perf_counter()
+        latency = None
         try:
             for ev in stream_events({"question": question, "history": history, "doc_type": doc_type}):
                 if ev["type"] == "meta" and ev.get("notice"):
@@ -62,10 +71,14 @@ if question := st.chat_input("Tanya tentang K3 peledakan..."):
                     box.markdown(text + "▌")
                 elif ev["type"] == "sources":
                     sources = ev["sources"]
+                elif ev["type"] == "done":
+                    latency = time.perf_counter() - t0
                 elif ev["type"] == "error":
                     st.error(f"Terjadi kesalahan: {ev['message']}")
         except requests.RequestException as exc:
             st.error(f"Backend tidak dapat dihubungi ({API_URL}): {exc}")
+        if latency is None and text:
+            latency = time.perf_counter() - t0
         box.markdown(text)
-        render_sources(sources)
-    st.session_state.messages.append({"role": "assistant", "content": text, "sources": sources})
+        render_meta(sources, latency)
+    st.session_state.messages.append({"role": "assistant", "content": text, "sources": sources, "latency": latency})

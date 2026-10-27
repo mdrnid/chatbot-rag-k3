@@ -1,0 +1,18 @@
+# Parsing & OCR
+pymupdf>=1.24
+pytesseract>=0.3.10
+pillow>=10.0
+# Embedding & vector DB
+sentence-transformers>=3.0
+chromadb>=0.5
+# LLM (OpenAI-compatible: OpenAI, Ollama, vLLM, dll.)
+openai>=1.40
+# Backend & frontend
+fastapi>=0.111
+uvicorn[standard]>=0.30
+pydantic>=2.7
+streamlit>=1.36
+requests>=2.32
+python-dotenv>=1.0
+# Testing
+pytest>=8.0
