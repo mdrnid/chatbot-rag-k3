@@ -1,0 +1,8 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/config/route": "/api/config",
+  "/api/health/route": "/api/health",
+  "/page": "/",
+  "/api/feedback/route": "/api/feedback",
+  "/api/chat/stream/route": "/api/chat/stream"
+}
