@@ -48,6 +48,9 @@ class Settings:
     history_turns: int = _int("HISTORY_TURNS", 6)
 
     emergency_contact: str = _str("EMERGENCY_CONTACT", "Tim Tanggap Darurat site")
+    emergency_contact_name: str = _str("EMERGENCY_CONTACT_NAME", "ERT")
+    emergency_contact_phone: str = _str("EMERGENCY_CONTACT_PHONE", "112")
+    cors_origins: tuple[str, ...] = tuple(x.strip() for x in _str("CORS_ORIGINS", "http://localhost:3000").split(",") if x.strip())
     log_level: str = _str("LOG_LEVEL", "INFO")
 
 settings = Settings()

@@ -7,10 +7,15 @@ data/processed/
 # PDF tidak di-commit (SNI berbayar tidak boleh masuk repo publik)
 data/raw/**/*.pdf
 
-# Konteks coding agent & docs
+# Konteks coding agent
 .agents/
 AGENTS.md
-docs/
+
+# Node
+node_modules/
+.next/
+web/.next/
+web/out/
 
 #other files
 Source Code — Level 2 (Asisten K3 Peledakan) d0980e25980683d6940c81410cd298c6.md
