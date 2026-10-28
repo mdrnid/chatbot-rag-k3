@@ -1,8 +1,0 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/config/route": "app/api/config/route.js",
-  "/api/health/route": "app/api/health/route.js",
-  "/page": "app/page.js",
-  "/api/feedback/route": "app/api/feedback/route.js",
-  "/api/chat/stream/route": "app/api/chat/stream/route.js"
-}

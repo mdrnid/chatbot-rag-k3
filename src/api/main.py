@@ -5,6 +5,8 @@ import json
 import logging
 import time
 import uuid
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from functools import lru_cache
 from typing import Literal
 
@@ -22,7 +24,15 @@ log = logging.getLogger(__name__)
 
 DOC_TYPES = ("regulasi", "sop", "ik")
 
-app = FastAPI(title="Asisten K3 Peledakan", version="0.2.0", description=DISCLAIMER)
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    """Muat RAG pipeline (embedder + vector store) saat startup, bukan saat request pertama."""
+    log.info("Warm-up RAG pipeline (memuat model embedding)...")
+    get_pipeline()
+    log.info("RAG pipeline siap menerima request.")
+    yield
+
+app = FastAPI(title="Asisten K3 Peledakan", version="0.2.0", description=DISCLAIMER, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -49,6 +59,8 @@ class FeedbackRequest(BaseModel):
 @lru_cache
 def get_pipeline() -> RAGPipeline:
     return RAGPipeline(settings)
+
+
 
 @app.get("/health")
 def health() -> dict:
