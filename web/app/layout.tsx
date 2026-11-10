@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Asisten K3 Peledakan Tambang",
+  title: "PT Aryagans - BlastGuard K3 Peledakan Tambang",
   description:
-    "Chatbot panduan keselamatan kerja peledakan tambang terbuka batubara berbasis RAG dengan sitasi resmi Kepmen ESDM 1827 dan SOP site.",
+    "Portal rujukan keselamatan kerja peledakan pit tambang PT Aryagans berbasis RAG dengan sitasi resmi Kepmen ESDM 1827/2018 dan SOP site.",
 };
 
 export default function RootLayout({

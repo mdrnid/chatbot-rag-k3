@@ -48,8 +48,6 @@ export function CitationChip({
   }
 
   // Case 3: Valid Citation (Emerald 600 K3)
-  const scorePercent = Math.round(source.score * 100);
-
   return (
     <span
       className="relative inline-block"
@@ -77,9 +75,6 @@ export function CitationChip({
           <div className="flex items-center justify-between border-b border-border pb-1.5">
             <span className="font-bold text-xs text-emerald-600 dark:text-emerald-400">
               Rujukan [{source.id}]
-            </span>
-            <span className="text-[11px] font-semibold text-muted-foreground">
-              Relevansi: {scorePercent}%
             </span>
           </div>
 

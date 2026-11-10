@@ -19,6 +19,7 @@ import {
   FileWarning,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MessageLoading } from "@/components/ui/message-loading";
 
 interface DemoAnswer {
   question: string;
@@ -30,32 +31,32 @@ interface DemoAnswer {
 
 const SOP_DEMOS: Record<string, DemoAnswer> = {
   misfire: {
-    question: "Bagaimana prosedur penanganan lubang peledakan mangkir (misfire)?",
+    question: "Bagaimana prosedur penanganan lubang peledakan mangkir (misfire) di pit PT Aryagans?",
     emergency: {
       icon: <AlertTriangle className="h-4 w-4" />,
       text: "PERINGATAN DARURAT: Dilarang mendekati lubang ledak selama waktu tunggu berlangsung!",
     },
-    body: "Sesuai prosedur SOP-BLS-04 dan kaidah Kepmen ESDM No. 1827/2018 Lampiran II:",
+    body: "Sesuai prosedur internal SOP-AG-BLS-04 dan Kepmen ESDM No. 1827/2018 Lampiran II:",
     points: [
-      "Area peledakan tetap diblokade total; tidak ada pekerja atau unit yang diizinkan masuk sebelum dinyatakan aman.",
-      "Patuhi waktu tunggu minimum yang ditetapkan regulasi dan KTT sebelum dilakukan pemeriksaan awal.",
-      "Pemeriksaan hanya boleh dilakukan oleh Juru Ledak pemegang KIM didampingi Pengawas Peledakan.",
-      "Dilarang mencabut atau mengebor ulang lubang misfire; penanganan wajib menggunakan metode yang diizinkan regulasi.",
+      "Pasang barikade isolasi dan rambu peringatan di seluruh akses menuju lokasi misfire.",
+      "Patuhi waktu tunggu minimal sesuai instruksi tertulis KTT sebelum pemeriksaan area.",
+      "Pemeriksaan hanya dapat dilakukan oleh Juru Ledak ber-KIM bersama Pengawas Peledakan.",
+      "Dilarang menarik leg wire atau mengebor ulang lubang misfire.",
     ],
     citations: [
-      { id: "S1", title: "SOP-BLS-04 Penanganan Misfire (fiktif)" },
+      { id: "S1", title: "SOP-AG-BLS-04 Penanganan Misfire (PT Aryagans)" },
       { id: "S2", title: "Kepmen ESDM 1827 K/30/MEM/2018 Lamp. II" },
     ],
   },
   gudang_handak: {
-    question: "Apa saja ketentuan pengamanan gudang bahan peledak di area tambang?",
+    question: "Apa saja ketentuan pengamanan gudang bahan peledak di site PT Aryagans?",
     emergency: null,
     body: "Berdasarkan Perkap/Perpol No. 17 Tahun 2017 dan Kepmen ESDM No. 1827/2018 Lampiran II:",
     points: [
-      "Gudang bahan peledak wajib memiliki izin resmi dan diawasi petugas pengamanan bersertifikat 24 jam.",
-      "Pemisahan mutlak antara ruang penyimpanan detonator dengan bahan peledak peka primer (ANFO / dinamit).",
-      "Pencatatan tertib dan berkala atas setiap penerimaan, pengeluaran, dan sisa bahan peledak di buku register.",
-      "Area sekitar gudang dilengkapi pagar pembatas, penangkal petir teruji, serta rambu larangan yang jelas.",
+      "Gudang bahan peledak wajib dijaga 24 jam oleh petugas satuan pengamanan bersertifikat.",
+      "Detonator wajib disimpan terpisah dari bahan peledak peka primer (ANFO dan dinamit).",
+      "Petugas wajib mencatat setiap penerimaan dan pengeluaran bahan peledak di buku register.",
+      "Area gudang wajib memiliki tanggul pengaman, kawat duri, dan instalasi penangkal petir teruji.",
     ],
     citations: [
       { id: "S1", title: "Perkap/Perpol No. 17 Tahun 2017" },
@@ -68,7 +69,7 @@ const SOP_DEMOS: Record<string, DemoAnswer> = {
     body: "STATUS REGULASI: Permen ESDM No. 38 Tahun 2014 berstatus TELAH DICABUT.",
     points: [
       "Permen ESDM No. 38 Tahun 2014 tentang Penerapan SMKP Minerba sudah tidak berlaku.",
-      "Regulasi pengganti yang sah adalah Permen ESDM No. 26 Tahun 2018 tentang Pelaksanaan Kaidah Pertambangan yang Baik.",
+      "Regulasi pengganti yang sah adalah Permen ESDM No. 26 Tahun 2018 tentang Kaidah Pertambangan yang Baik.",
       "Pedoman teknis keselamatan peledakan mengacu pada Kepmen ESDM No. 1827 K/30/MEM/2018.",
     ],
     citations: [
@@ -77,12 +78,12 @@ const SOP_DEMOS: Record<string, DemoAnswer> = {
     ],
   },
   penolakan: {
-    question: "Berapa standar gaji atau bonus tahunan untuk kru peledakan pit?",
+    question: "Berapa standar gaji atau bonus tahunan untuk kru peledakan pit PT Aryagans?",
     emergency: null,
-    body: "Informasi tidak ditemukan di dokumen rujukan.",
+    body: "Informasi tidak ditemukan di dalam korpus dokumen teknis K3.",
     points: [
-      "Sistem ini dibatasi hanya untuk menjawab keselamatan teknis, regulasi ESDM/Polri, dan SOP peledakan lapangan.",
-      "Pertanyaan perihal struktur penggajian, kontrak kerja, atau kebijakan personalia berada di luar ruang lingkup dokumen.",
+      "Sistem ini hanya melayani pertanyaan teknis K3, regulasi ESDM/Polri, dan SOP peledakan site.",
+      "Pertanyaan perihal struktur penggajian dan administrasi personalia berada di luar wewenang sistem.",
     ],
     citations: [],
   },
@@ -98,18 +99,18 @@ const QUICK_CHIPS = [
 const DISCIPLINE_PILLARS = [
   {
     icon: <BookOpen className="h-6 w-6 text-emerald-600" />,
-    title: "Sitasi Regulasi Transparan [S#]",
-    desc: "Setiap instruksi teknis langsung menyertakan dokumen dan pasal rujukan resmi agar Pengawas dapat memverifikasi keabsahan aturannya seketika.",
+    title: "Sitasi Regulasi Wajib [S#]",
+    desc: "Setiap instruksi langsung mencantumkan dokumen dan pasal resmi. Pengawas dapat langsung memverifikasi aturan ke sumber sah.",
   },
   {
     icon: <AlertTriangle className="h-6 w-6 text-amber-600" />,
     title: "Prioritas Tanggap Darurat",
-    desc: "Kondisi darurat seperti lubang ledak mangkir (misfire) langsung memunculkan peringatan pengamanan perimeter sebelum instruksi lainnya.",
+    desc: "Kondisi darurat seperti lubang ledak mangkir (misfire) langsung menampilkan peringatan perimeter sebelum instruksi lainnya.",
   },
   {
     icon: <Ban className="h-6 w-6 text-rose-600" />,
     title: "Penolakan Tanpa Asumsi",
-    desc: "Jika suatu hal tidak tercantum di dokumen resmi yang diindeks, bot menolak menjawab guna mencegah kesalahan fatal akibat spekulasi di pit.",
+    desc: "Sistem menolak menjawab jika informasi tidak tercantum di dokumen resmi. Hal ini mencegah spekulasi berbahaya di pit.",
   },
 ];
 
@@ -117,7 +118,7 @@ const SHOWCASE_DOCUMENTS = [
   {
     badge: "Kepmen 1827/2018",
     title: "Kepmen ESDM No. 1827/2018",
-    sub: "Kaidah Teknik Pertambangan — Lampiran II",
+    sub: "Kaidah Teknik Pertambangan (Lampiran II)",
     status: "Berlaku • Pedoman Teknis Peledakan",
   },
   {
@@ -133,10 +134,10 @@ const SHOWCASE_DOCUMENTS = [
     status: "Berlaku • Regulasi Payung SMKP",
   },
   {
-    badge: "SOP Portofolio",
-    title: "SOP-BLS-04 Penanganan Misfire",
+    badge: "SOP Internal",
+    title: "SOP-AG-BLS-04 Penanganan Misfire",
     sub: "Prosedur Standar Lubang Ledak Mangkir",
-    status: "SOP Fiktif • Rujukan Uji Lapangan",
+    status: "SOP Site PT Aryagans",
   },
 ];
 
@@ -211,7 +212,7 @@ function ChatDemoWidget() {
             <Bot className="h-4 w-4" />
           </div>
           <div>
-            <span className="text-xs font-bold text-slate-900">Simulasi Respon Asisten K3</span>
+            <span className="text-xs font-bold text-slate-900">Simulasi Rujukan K3 PT Aryagans</span>
           </div>
         </div>
         <span className="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
@@ -298,13 +299,9 @@ function ChatDemoWidget() {
         )}
 
         {isTyping && (
-          <div className="mr-auto flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 border border-slate-200 text-xs text-slate-400">
-            <span className="flex gap-1">
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-600 [animation-delay:-0.3s]" />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-600 [animation-delay:-0.15s]" />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-600" />
-            </span>
-            <span className="text-[11px] text-slate-500">Memeriksa dokumen...</span>
+          <div className="mr-auto flex items-center gap-2 rounded-full bg-white px-3 py-1.5 border border-slate-200 text-xs text-slate-500 shadow-sm">
+            <MessageLoading className="h-4 w-4 text-emerald-600" />
+            <span className="text-[11px] font-medium">Memeriksa dokumen...</span>
           </div>
         )}
       </div>
@@ -371,11 +368,19 @@ export default function LandingPage() {
             >
               <Shield className="h-4 w-4" />
             </div>
-            <span className="text-base font-extrabold tracking-tight">
-              BLASTGUARD
-              <span className={isScrolled ? "text-emerald-600" : "text-emerald-400"}>.</span>
-              AI
-            </span>
+            <div className="flex flex-col text-left">
+              <span className="text-sm font-extrabold tracking-tight leading-none">
+                PT ARYAGANS
+              </span>
+              <span
+                className={cn(
+                  "text-[10px] font-bold tracking-wider uppercase",
+                  isScrolled ? "text-emerald-700" : "text-emerald-300"
+                )}
+              >
+                BlastGuard K3
+              </span>
+            </div>
           </div>
 
           <nav
@@ -388,10 +393,10 @@ export default function LandingPage() {
               Prinsip Sistem
             </a>
             <a href="#regulasi" className={isScrolled ? "hover:text-slate-900 transition" : "hover:text-white transition"}>
-              Regulasi Terdaftar
+              Regulasi & SOP Site
             </a>
             <a href="#simulasi" className={isScrolled ? "hover:text-slate-900 transition" : "hover:text-white transition"}>
-              Simulasi
+              Simulasi Pit
             </a>
           </nav>
 
@@ -405,7 +410,7 @@ export default function LandingPage() {
                   : "bg-white text-slate-950 hover:bg-slate-100"
               )}
             >
-              <span>Mulai Konsultasi</span>
+              <span>Buka Asisten K3</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -447,12 +452,12 @@ export default function LandingPage() {
         {/* Hero Content: Centered bold typography */}
         <div className="relative z-20 max-w-3xl mx-auto px-4 pt-12">
           <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-tight drop-shadow-md">
-            Rujukan K3 & Prosedur Peledakan Tambang Terbuka
+            Portal K3 & Prosedur Peledakan Tambang PT Aryagans
           </h1>
 
           <p className="mt-4 text-base sm:text-lg text-slate-200 max-w-2xl mx-auto leading-relaxed drop-shadow">
-            Akses cepat Kepmen ESDM 1827/2018, Perpol 17/2017, dan SOP penanganan misfire untuk Pengawas Operasional
-            dan Juru Ledak di pit. Menjawab dengan sitasi pasal resmi.
+            Akses cepat Kepmen ESDM 1827/2018, Perpol 17/2017, dan SOP internal untuk Pengawas Operasional
+            dan Juru Ledak di pit. Sistem menyajikan jawaban dengan sitasi pasal resmi.
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-4">
@@ -460,7 +465,7 @@ export default function LandingPage() {
               href="/chat"
               className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-950/30 transition hover:bg-emerald-500 hover:scale-105 active:scale-95"
             >
-              <span>Mulai Konsultasi K3</span>
+              <span>Masuk ke Portal K3</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -472,10 +477,10 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Disiplin Operasional & Batasan Sistem
+              Disiplin Keselamatan & Batasan Sistem
             </h2>
             <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-              Peledakan tambang menuntut kepastian aturan. Sistem ini dirancang untuk menjawab hanya dari korpus regulasi resmi.
+              Operasional peledakan pit PT Aryagans memerlukan kepastian aturan. Sistem ini hanya menjawab dari dokumen resmi yang terdaftar.
             </p>
           </div>
 
@@ -502,10 +507,10 @@ export default function LandingPage() {
           <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end mb-8">
             <div>
               <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                Regulasi & SOP Terdaftar
+                Regulasi Nasional & SOP Site Terdaftar
               </h2>
               <p className="mt-1 text-sm text-slate-600">
-                Dokumen resmi yang diindeks dan diverifikasi dalam sistem pencarian jawaban.
+                Dokumen resmi yang diindeks dan diverifikasi dalam sistem rujukan internal PT Aryagans.
               </p>
             </div>
             <Link
@@ -550,29 +555,28 @@ export default function LandingPage() {
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                Simulasi Lapangan
+                Simulasi Operasional Pit
               </span>
               <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                Uji Respon Berdasarkan Regulasi Nyata
+                Verifikasi Respon Sesuai Standar Operasional
               </h2>
               <p className="mt-3 text-sm text-slate-600 leading-relaxed">
-                Pilih skenario simulasi untuk melihat bagaimana sistem merespon prosedur peledakan mangkir (misfire),
-                izin pengamanan gudang handak, penanganan regulasi yang telah dicabut, serta penolakan tegas saat pertanyaan
-                berada di luar korpus.
+                Pilih skenario simulasi untuk melihat cara sistem memvalidasi prosedur lubang mangkir (misfire),
+                pengamanan gudang handak, status regulasi dicabut, dan penolakan otomatis.
               </p>
 
               <div className="mt-6 flex flex-col gap-3">
                 <div className="flex items-center gap-3 text-xs text-slate-700">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>SOP penanganan misfire merujuk SOP-BLS-04 & Kepmen ESDM 1827/2018.</span>
+                  <span>SOP penanganan misfire merujuk SOP-AG-BLS-04 dan Kepmen ESDM 1827/2018.</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-slate-700">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>Ketentuan gudang handak merujuk Perpol 17/2017 & Kepmen 1827/2018.</span>
+                  <span>Ketentuan pengamanan gudang handak merujuk Perpol 17/2017 dan Kepmen 1827/2018.</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-slate-700">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>Otomatis menolak menjawab jika pertanyaan di luar konteks keselamatan tambang.</span>
+                  <span>Sistem otomatis menolak menjawab jika topik berada di luar korpus keselamatan tambang.</span>
                 </div>
               </div>
 
@@ -581,7 +585,7 @@ export default function LandingPage() {
                   href="/chat"
                   className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-slate-800"
                 >
-                  <span>Buka Konsultasi Chat Lengkap</span>
+                  <span>Buka Konsultasi K3 Lengkap</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
@@ -606,9 +610,9 @@ export default function LandingPage() {
                 Pemberitahuan Keselamatan Hukum (Safety Disclaimer)
               </h3>
               <p className="mt-1 text-xs text-amber-900 leading-relaxed max-w-4xl">
-                Asisten AI K3 Peledakan ini adalah <strong>alat bantu penelusuran referensi cepat</strong> dan bukan
-                pengganti dari Standar Operasional Prosedur (SOP) resmi perusahaan, izin tertulis, atau wewenang mutlak
-                Kepala Teknik Tambang (KTT) & Juru Ledak bersertifikat KIM di lapangan.
+                Asisten K3 Peledakan ini adalah <strong>alat bantu rujukan teknis cepat</strong>. Sistem bukan
+                pengganti Standar Operasional Prosedur (SOP) tertulis perusahaan, izin tertulis, atau wewenang penuh
+                Kepala Teknik Tambang (KTT) dan Juru Ledak bersertifikat KIM PT Aryagans.
               </p>
             </div>
           </div>
@@ -620,13 +624,13 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 text-xs text-slate-500">
           <div className="flex items-center gap-2 font-semibold text-slate-800">
             <Shield className="h-4 w-4 text-emerald-600" />
-            <span>BLASTGUARD AI — Asisten K3 Peledakan Tambang Terbuka</span>
+            <span>PT ARYAGANS • BlastGuard K3 Portal Operasional Peledakan</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="#beranda" className="hover:text-slate-900 transition">Kembali ke Atas</a>
             <span>•</span>
             <Link href="/chat" className="text-emerald-700 font-semibold hover:underline">
-              Buka Konsultasi
+              Buka Asisten K3
             </Link>
           </div>
         </div>

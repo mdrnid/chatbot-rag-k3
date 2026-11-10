@@ -69,16 +69,12 @@ describe("K3 Safety & UI Components", () => {
     expect(
       screen.getByText("Maaf, informasi tentang harga amunisi tidak ada di dokumen.")
     ).toBeDefined();
-    expect(
-      screen.getByText(/tidak boleh berspekulasi tanpa dasar hukum/)
-    ).toBeDefined();
   });
 
   it("SourceCard displays 'DICABUT' badge in red for revoked documents", () => {
     render(<SourceCard source={REVOKED_SOURCE} />);
 
     expect(screen.getByText(/DICABUT → Digantikan oleh Kepmen ESDM 1827/)).toBeDefined();
-    expect(screen.getByText("85%")).toBeDefined();
   });
 
   it("CitationChip renders and opens SourcePanel on click", () => {

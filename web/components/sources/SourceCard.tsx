@@ -15,8 +15,6 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
     Boolean(source.metadata?.replaced_by);
   const replacedBy = (source.metadata?.replaced_by as string) || "Dokumen Pengganti Terkait";
 
-  const scorePercent = Math.min(Math.round(source.score * 100), 100);
-
   return (
     <article
       id={`source-${source.id}`}
@@ -66,22 +64,8 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
         </h4>
       </div>
 
-      {/* Relevansi Progress Bar */}
-      <div className="mt-3">
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-          <span>Skor Relevansi</span>
-          <span className="font-bold text-foreground">{scorePercent}%</span>
-        </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <div
-            className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-500 rounded-full"
-            style={{ width: `${scorePercent}%` }}
-          />
-        </div>
-      </div>
-
       {/* Snippet Teks Rujukan */}
-      <div className="mt-3 rounded-md bg-muted/60 p-3 text-xs leading-relaxed text-foreground/90 font-mono">
+      <div className="mt-3 rounded-md bg-muted/50 p-3 text-xs leading-relaxed text-foreground/90 font-sans">
         <p className="whitespace-pre-wrap">{source.snippet}</p>
       </div>
 

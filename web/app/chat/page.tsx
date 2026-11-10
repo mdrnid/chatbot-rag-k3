@@ -109,7 +109,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <HardHat className="h-5 w-5 text-emerald-600 dark:text-emerald-400 md:hidden" />
               <h2 className="font-bold text-sm text-foreground truncate max-w-[200px] sm:max-w-md">
-                {activeConv?.title || "Asisten K3 Peledakan"}
+                {activeConv?.title || "Asisten K3 Peledakan - PT Aryagans"}
               </h2>
             </div>
           </div>
@@ -155,20 +155,18 @@ export default function Home() {
           />
         </main>
 
-        {/* Input Bar Area */}
+        {/* Input Bar Area & Subtle Disclaimer */}
         <div className="border-t border-border bg-background/80 p-3 sm:p-4 backdrop-blur">
-          <div className="mx-auto w-full max-w-3xl">
+          <div className="mx-auto w-full max-w-3xl space-y-2">
             <ChatInput
               onSendMessage={(q) => sendMessage(q)}
               onStop={stopGeneration}
               isStreaming={isStreaming}
               disabled={health?.status === "offline"}
             />
+            <DisclaimerBar disclaimer={config?.disclaimer} />
           </div>
         </div>
-
-        {/* Mandatory Bottom Disclaimer Bar */}
-        <DisclaimerBar disclaimer={config?.disclaimer} />
       </div>
 
       {/* Global Sources Drawer / Bottom Sheet */}

@@ -90,10 +90,10 @@ export function Sidebar({
             </div>
             <div>
               <h1 className="font-extrabold text-sm leading-tight text-foreground">
-                Asisten K3
+                PT Aryagans
               </h1>
-              <p className="text-[11px] font-semibold text-muted-foreground">
-                Peledakan Tambang
+              <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                K3 Peledakan Pit
               </p>
             </div>
           </Link>
@@ -196,34 +196,17 @@ export function Sidebar({
           )}
         </div>
 
-        {/* Footer: Status Sistem & Theme Toggle */}
-        <div className="border-t border-border p-3 space-y-2 bg-card/60">
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1.5">
-              {isOnline ? (
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-              ) : (
-                <XCircle className="h-4 w-4 text-muted-foreground" />
-              )}
-              <span className="font-semibold text-foreground">
-                {isOnline ? "Sistem Online" : "Backend Offline"}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
-              aria-label="Ubah tema"
-              title={isDark ? "Ganti ke Mode Terang" : "Ganti ke Mode Gelap"}
-            >
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-          </div>
-
-          <div className="text-[11px] text-muted-foreground font-mono truncate">
-            Model: {health?.model || config?.model || "qwen2.5:7b"}
-          </div>
+        {/* Footer: Theme Toggle */}
+        <div className="border-t border-border p-3 flex items-center justify-end bg-card/60">
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
+            aria-label="Ubah tema"
+            title={isDark ? "Ganti ke Mode Terang" : "Ganti ke Mode Gelap"}
+          >
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
         </div>
       </aside>
     </>

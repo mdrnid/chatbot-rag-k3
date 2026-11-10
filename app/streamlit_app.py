@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 LLM_MODEL = os.getenv("LLM_MODEL", "OpenRouter")
-DISCLAIMER = "Chatbot ini alat bantu, bukan pengganti SOP resmi perusahaan, regulasi, maupun arahan Pengawas/KTT."
+DISCLAIMER = "Alat bantu teknis. Selalu verifikasi keputusan ke dokumen resmi & arahan Pengawas/KTT."
 
 st.set_page_config(page_title="Asisten K3 Peledakan", page_icon="⛑️")
 st.title("⛑️ Asisten K3 Peledakan")
@@ -32,7 +32,7 @@ def render_sources(sources: list[dict]) -> None:
     with st.expander(f"📚 Sumber ({sum(s['cited'] for s in sources)} dikutip)"):
         for s in sorted(sources, key=lambda x: not x["cited"]):
             mark = "✅" if s["cited"] else "▫️"
-            st.markdown(f"{mark} **[{s['id']}]** {s['label']}  \n_skor: {s['score']}_")
+            st.markdown(f"{mark} **[{s['id']}]** {s['label']}")
             st.caption(s["snippet"])
 
 def stream_events(payload: dict):
@@ -44,8 +44,6 @@ def stream_events(payload: dict):
 
 def render_meta(sources: list[dict], latency: float | None = None) -> None:
     render_sources(sources)
-    if latency is not None:
-        st.caption(f"⏱️ *Debug Latensi: **{latency:.2f} detik** | Model: `{LLM_MODEL}`*")
 
 for m in st.session_state.messages:
     with st.chat_message(m["role"]):

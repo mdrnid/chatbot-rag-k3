@@ -10,6 +10,7 @@ import { EmergencyBanner } from "@/components/safety/EmergencyBanner";
 import { CitationWarning } from "@/components/safety/CitationWarning";
 import { RefusalState } from "@/components/safety/RefusalState";
 import { parseCitations } from "@/lib/citations";
+import { MessageLoading } from "@/components/ui/message-loading";
 import {
   Copy,
   Check,
@@ -63,7 +64,7 @@ export function MessageBubble({
       if (message.sources && message.sources.length > 0) {
         copyText += "\n\n--- Rujukan Dokumen K3 ---\n";
         message.sources.forEach((s) => {
-          copyText += `[${s.id}] ${s.label} (Skor: ${Math.round(s.score * 100)}%)\n`;
+          copyText += `[${s.id}] ${s.label}\n`;
         });
       }
       await navigator.clipboard.writeText(copyText);
@@ -148,18 +149,15 @@ export function MessageBubble({
         />
       )}
 
-      {/* 2. Standalone Question Indicator */}
-      {message.standalone_question && (
-        <div className="mb-2 flex items-center gap-1.5 text-xs text-muted-foreground italic">
-          <HelpCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-          <span>Dipahami sebagai: <strong>{message.standalone_question}</strong></span>
-        </div>
-      )}
-
-      {/* 3. Message Body */}
+      {/* 2. Message Body */}
       <div className="relative rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm">
         {isRefusal ? (
           <RefusalState message={message.content} />
+        ) : !message.content && message.status === "streaming" ? (
+          <div className="flex items-center gap-2.5 py-1 text-muted-foreground">
+            <MessageLoading className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-xs font-medium">Memeriksa rujukan regulasi...</span>
+          </div>
         ) : (
           <div className="prose prose-sm dark:prose-invert max-w-none text-foreground leading-relaxed">
             <ReactMarkdown
@@ -239,7 +237,6 @@ export function MessageBubble({
             {/* Feedback 👍 / 👎 with touch target >= 44px */}
             {message.request_id && (
               <div className="flex items-center gap-1">
-                <span className="text-[11px] text-muted-foreground mr-1.5">Akurasi:</span>
                 <button
                   type="button"
                   onClick={() => handleFeedback("up")}

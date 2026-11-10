@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { HardHat, ShieldCheck, Flame, Compass, ArrowRight } from "lucide-react";
+import { HardHat, ArrowRight } from "lucide-react";
 
 interface EmptyStateProps {
   onSelectPrompt: (prompt: string) => void;
@@ -10,22 +10,22 @@ interface EmptyStateProps {
 const EXAMPLE_PROMPTS = [
   {
     title: "Radius Aman Peledakan",
-    desc: "Berapa jarak aman minimum peledakan untuk manusia dan unit alat berat?",
-    prompt: "Berapa jarak aman minimum peledakan untuk manusia dan alat berat menurut regulasi?",
+    desc: "Jarak aman minimum peledakan untuk pekerja dan unit alat berat di pit?",
+    prompt: "Berapa jarak aman minimum peledakan untuk manusia dan alat berat menurut regulasi ESDM?",
   },
   {
-    title: "Syarat & Kualifikasi Juru Ledak",
-    desc: "Apa syarat kepemilikan KIM dan kompetensi juru ledak?",
+    title: "Syarat & Tugas Juru Ledak",
+    desc: "Kewajiban kepemilikan KIM dan batas wewenang teknis juru ledak?",
     prompt: "Apa saja persyaratan juru ledak dan kewajiban memiliki KIM berdasarkan Kepmen 1827?",
   },
   {
     title: "Penanganan Misfire (Mangkir)",
-    desc: "Langkah penanganan jika terjadi mangkir ledak di lokasi blasting?",
-    prompt: "Bagaimana prosedur aman penanganan misfire atau lubang mangkir menurut SOP K3?",
+    desc: "Langkah aman penanganan lubang ledak mangkir di pit PT Aryagans?",
+    prompt: "Bagaimana prosedur aman penanganan misfire menurut SOP-AG-BLS-04 dan Kepmen ESDM 1827?",
   },
   {
-    title: "Waktu Tunggu Pasca Peledakan",
-    desc: "Berapa lama waktu tunggu sebelum area peledakan boleh diperiksa?",
+    title: "Waktu Tunggu Pasca Ledak",
+    desc: "Durasi tunggu sebelum juru ledak dan pengawas memeriksa area peledakan?",
     prompt: "Berapa lama waktu tunggu pasca peledakan sebelum juru ledak boleh memeriksa hasil peledakan?",
   },
 ];
@@ -33,22 +33,13 @@ const EXAMPLE_PROMPTS = [
 export function EmptyState({ onSelectPrompt }: EmptyStateProps) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:py-12">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-600 ring-4 ring-emerald-500/10 dark:text-emerald-400">
-        <HardHat className="h-9 w-9 text-emerald-600 dark:text-emerald-400" />
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-600 ring-4 ring-emerald-500/10 dark:text-emerald-400">
+        <HardHat className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
       </div>
 
-      <div className="mt-4 flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1 text-xs font-semibold text-muted-foreground shadow-sm">
-        <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-        <span>Panduan Pengawas & Juru Ledak • Regulasi ESDM & SOP Site</span>
-      </div>
-
-      <h2 className="mt-3 font-extrabold text-2xl text-foreground sm:text-3xl tracking-tight">
+      <h2 className="mt-4 font-extrabold text-2xl text-foreground sm:text-3xl tracking-tight">
         Asisten K3 Peledakan
       </h2>
-
-      <p className="mt-2 max-w-lg text-sm text-muted-foreground leading-relaxed sm:text-base">
-        Sistem panduan keselamatan berbasis regulasi resmi (Kepmen ESDM 1827) dan SOP site. Seluruh jawaban wajib menyertakan sitasi rujukan dokumen.
-      </p>
 
       {/* Suggested Prompts Grid */}
       <div className="mt-8 grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2 text-left">
