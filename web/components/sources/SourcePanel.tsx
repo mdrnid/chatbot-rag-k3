@@ -57,12 +57,12 @@ export function SourcePanel() {
         {/* Panel Header */}
         <header className="flex items-center justify-between border-b border-border p-4">
           <div className="flex items-center gap-2">
-            <BookMarked className="h-5 w-5 text-primary" />
+            <BookMarked className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             <h3 className="font-bold text-base text-foreground">
               Dokumen Rujukan ({sources.length})
             </h3>
             {citedCount > 0 && (
-              <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">
+              <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                 {citedCount} dikutip
               </span>
             )}
@@ -71,7 +71,7 @@ export function SourcePanel() {
           <button
             type="button"
             onClick={closeSourcePanel}
-            className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             aria-label="Tutup panel dokumen"
           >
             <X className="h-5 w-5" />

@@ -47,7 +47,7 @@ export function CitationChip({
     );
   }
 
-  // Case 3: Valid Citation
+  // Case 3: Valid Citation (Emerald 600 K3)
   const scorePercent = Math.round(source.score * 100);
 
   return (
@@ -61,7 +61,7 @@ export function CitationChip({
         onClick={() => openSourcePanel(source.id)}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
-        className="mx-0.5 inline-flex min-h-0 items-center gap-0.5 rounded border border-amber-500/50 bg-amber-500/15 px-1.5 py-0.5 text-xs font-bold text-amber-900 transition-all hover:bg-amber-500 hover:text-black dark:text-amber-300 dark:hover:text-black focus:outline-none focus:ring-2 focus:ring-amber-500"
+        className="mx-0.5 inline-flex min-h-[26px] items-center gap-1 rounded border border-emerald-500/40 bg-emerald-50/90 px-2 py-0.5 text-xs font-bold text-emerald-800 transition-all hover:bg-emerald-600 hover:text-white dark:bg-emerald-950/60 dark:border-emerald-700/60 dark:text-emerald-300 dark:hover:bg-emerald-600 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
         aria-label={`Buka rujukan sumber ${source.id}: ${source.label}`}
       >
         <FileText className="h-3 w-3" />
@@ -72,10 +72,10 @@ export function CitationChip({
       {isOpen && (
         <div
           role="tooltip"
-          className="absolute bottom-full left-1/2 z-50 mb-2 w-72 -translate-x-1/2 rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-2xl animate-in fade-in zoom-in-95"
+          className="absolute bottom-full left-1/2 z-50 mb-2 w-72 -translate-x-1/2 rounded-lg border border-border bg-popover p-3.5 text-popover-foreground shadow-2xl animate-in fade-in zoom-in-95"
         >
           <div className="flex items-center justify-between border-b border-border pb-1.5">
-            <span className="font-bold text-xs text-primary">
+            <span className="font-bold text-xs text-emerald-600 dark:text-emerald-400">
               Rujukan [{source.id}]
             </span>
             <span className="text-[11px] font-semibold text-muted-foreground">
@@ -83,7 +83,7 @@ export function CitationChip({
             </span>
           </div>
 
-          <p className="mt-1.5 font-semibold text-xs text-foreground line-clamp-2">
+          <p className="mt-2 font-semibold text-xs text-foreground line-clamp-2">
             {source.label}
           </p>
 
@@ -98,7 +98,7 @@ export function CitationChip({
               openSourcePanel(source.id);
               setIsOpen(false);
             }}
-            className="mt-2.5 flex w-full min-h-[36px] items-center justify-center gap-1.5 rounded bg-secondary px-2 py-1 text-xs font-semibold text-secondary-foreground hover:bg-primary hover:text-primary-foreground"
+            className="mt-3 flex w-full min-h-[44px] items-center justify-center gap-2 rounded-lg bg-secondary px-3 py-2 text-xs font-semibold text-secondary-foreground hover:bg-emerald-600 hover:text-white transition-colors"
           >
             <span>Buka Dokumen Lengkap</span>
             <ExternalLink className="h-3.5 w-3.5" />

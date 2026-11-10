@@ -131,7 +131,7 @@ export function MessageBubble({
   if (isUser) {
     return (
       <div className="flex w-full justify-end my-3">
-        <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl rounded-tr-sm bg-primary px-4 py-3 text-primary-foreground font-semibold shadow-sm leading-relaxed">
+        <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl rounded-tr-sm bg-emerald-600 px-4 py-3 text-white font-medium shadow-sm leading-relaxed dark:bg-emerald-700">
           <p className="whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
@@ -151,7 +151,7 @@ export function MessageBubble({
       {/* 2. Standalone Question Indicator */}
       {message.standalone_question && (
         <div className="mb-2 flex items-center gap-1.5 text-xs text-muted-foreground italic">
-          <HelpCircle className="h-3.5 w-3.5 text-primary" />
+          <HelpCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>Dipahami sebagai: <strong>{message.standalone_question}</strong></span>
         </div>
       )}
@@ -178,7 +178,7 @@ export function MessageBubble({
             </ReactMarkdown>
 
             {message.status === "streaming" && (
-              <span className="inline-block h-4 w-2 animate-pulse bg-primary ml-1 rounded-sm" />
+              <span className="inline-block h-4 w-2 animate-pulse bg-emerald-600 dark:bg-emerald-400 ml-1 rounded-sm" />
             )}
           </div>
         )}
@@ -190,8 +190,8 @@ export function MessageBubble({
 
         {/* 5. Error banner if status is error */}
         {message.status === "error" && message.error && (
-          <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-amber-500/50 bg-amber-500/10 p-3 text-xs text-foreground">
-            <AlertCircle className="h-4 w-4 shrink-0 text-amber-500 mt-0.5" />
+          <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-amber-500/50 bg-amber-500/10 p-3.5 text-xs text-foreground">
+            <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
             <div className="flex-1">
               <p className="font-bold">Gangguan Pengambilan Jawaban ({message.error.code || "ERROR"})</p>
               <p className="mt-0.5 text-muted-foreground">{message.error.message}</p>
@@ -199,9 +199,9 @@ export function MessageBubble({
                 <button
                   type="button"
                   onClick={onRegenerate}
-                  className="mt-2 inline-flex items-center gap-1.5 rounded bg-primary px-3 py-1 font-bold text-primary-foreground hover:bg-amber-400 active:scale-95"
+                  className="mt-2.5 inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 font-bold text-white hover:bg-emerald-700 active:scale-95 transition-colors"
                 >
-                  <RotateCcw className="h-3.5 w-3.5" />
+                  <RotateCcw className="h-4 w-4" />
                   <span>Coba Lagi</span>
                 </button>
               )}
@@ -209,17 +209,17 @@ export function MessageBubble({
           </div>
         )}
 
-        {/* 6. Action Toolbar (Copy, Regenerate, Feedback) */}
+        {/* 6. Action Toolbar with touch target >= 44px */}
         {message.status !== "streaming" && message.content && (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={handleCopy}
-                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95"
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 transition-colors"
                 title="Salin jawaban beserta sitasi"
               >
-                {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
+                {copied ? <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="h-4 w-4" />}
                 <span>{copied ? "Tersalin" : "Salin"}</span>
               </button>
 
@@ -227,7 +227,7 @@ export function MessageBubble({
                 <button
                   type="button"
                   onClick={onRegenerate}
-                  className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95"
+                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 transition-colors"
                   title="Buat ulang jawaban"
                 >
                   <RotateCcw className="h-4 w-4" />
@@ -236,29 +236,29 @@ export function MessageBubble({
               )}
             </div>
 
-            {/* Feedback 👍 / 👎 */}
+            {/* Feedback 👍 / 👎 with touch target >= 44px */}
             {message.request_id && (
               <div className="flex items-center gap-1">
-                <span className="text-[11px] text-muted-foreground mr-1">Akurasi:</span>
+                <span className="text-[11px] text-muted-foreground mr-1.5">Akurasi:</span>
                 <button
                   type="button"
                   onClick={() => handleFeedback("up")}
                   disabled={isSubmittingFeedback || rating === "up"}
-                  className={`flex h-8 w-8 items-center justify-center rounded-md text-xs transition-colors ${
+                  className={`flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-xs transition-colors ${
                     rating === "up"
-                      ? "bg-primary text-primary-foreground font-bold"
+                      ? "bg-emerald-600 text-white font-bold dark:bg-emerald-600"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`}
                   aria-label="Jawaban akurat"
                   title="Bagus / Akurat"
                 >
-                  <ThumbsUp className="h-3.5 w-3.5" />
+                  <ThumbsUp className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => handleFeedback("down")}
                   disabled={isSubmittingFeedback || rating === "down"}
-                  className={`flex h-8 w-8 items-center justify-center rounded-md text-xs transition-colors ${
+                  className={`flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-xs transition-colors ${
                     rating === "down"
                       ? "bg-secondary text-foreground font-bold"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
@@ -266,7 +266,7 @@ export function MessageBubble({
                   aria-label="Jawaban kurang akurat"
                   title="Kurang akurat"
                 >
-                  <ThumbsDown className="h-3.5 w-3.5" />
+                  <ThumbsDown className="h-4 w-4" />
                 </button>
               </div>
             )}

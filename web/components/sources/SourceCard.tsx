@@ -20,9 +20,9 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
   return (
     <article
       id={`source-${source.id}`}
-      className={`rounded-lg border p-4 transition-all ${
+      className={`rounded-xl border p-4 transition-all ${
         isHighlighted
-          ? "border-primary bg-primary/10 ring-2 ring-primary"
+          ? "border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/30 ring-2 ring-emerald-500/40"
           : "border-border bg-card hover:border-muted-foreground/40"
       }`}
     >
@@ -39,8 +39,8 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
 
         <div className="flex flex-wrap items-center gap-1.5">
           {source.cited && (
-            <span className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-bold text-foreground">
-              <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+            <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/15 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Dikutip</span>
             </span>
           )}
@@ -49,7 +49,7 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
           {isRevoked && (
             <span
               role="alert"
-              className="inline-flex items-center gap-1 rounded-md border border-red-600 bg-red-600 px-2 py-0.5 text-xs font-black text-white shadow-sm dark:bg-red-700"
+              className="inline-flex items-center gap-1 rounded-md border border-rose-600 bg-rose-600 px-2 py-0.5 text-xs font-black text-white shadow-sm dark:bg-rose-700"
             >
               <AlertTriangle className="h-3.5 w-3.5 text-white" />
               <span>DICABUT → Digantikan oleh {replacedBy}</span>
@@ -74,7 +74,7 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
           <div
-            className="h-full bg-primary transition-all duration-500 rounded-full"
+            className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-500 rounded-full"
             style={{ width: `${scorePercent}%` }}
           />
         </div>

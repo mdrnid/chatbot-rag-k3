@@ -21,7 +21,7 @@ export function RefusalState({ message }: RefusalStateProps) {
               "Maaf, informasi yang Anda tanyakan tidak ditemukan dalam basis dokumen regulasi maupun SOP K3 Peledakan yang tersedia saat ini."}
           </p>
           <div className="mt-3 flex items-center gap-2 rounded-md bg-muted/60 p-2.5 text-xs text-muted-foreground">
-            <ShieldAlert className="h-4 w-4 shrink-0 text-amber-500" />
+            <ShieldAlert className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
             <span>
               Sesuai standar keselamatan K3 peledakan, asisten ini tidak boleh berspekulasi tanpa dasar hukum atau rujukan dokumen teknis resmi.
             </span>

@@ -59,7 +59,7 @@ export function ChatInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex w-full items-end gap-2 rounded-2xl border-2 border-border bg-card p-2 shadow-lg transition-colors focus-within:border-primary"
+      className="relative flex w-full items-end gap-2 rounded-2xl border-2 border-border bg-card p-2 shadow-lg transition-colors focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-500/20"
     >
       <textarea
         ref={textareaRef}
@@ -77,7 +77,7 @@ export function ChatInput({
         <button
           type="button"
           onClick={onStop}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary text-foreground hover:bg-muted active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl bg-secondary text-foreground hover:bg-muted active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           aria-label="Hentikan pembuatan jawaban"
           title="Hentikan jawaban"
         >
@@ -87,7 +87,7 @@ export function ChatInput({
         <button
           type="submit"
           disabled={!input.trim() || disabled}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold shadow transition-all hover:bg-amber-400 active:scale-95 disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus:ring-2 focus:ring-primary"
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white font-bold shadow transition-all hover:bg-emerald-700 active:scale-95 disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
           aria-label="Kirim pertanyaan"
           title="Kirim (Enter)"
         >

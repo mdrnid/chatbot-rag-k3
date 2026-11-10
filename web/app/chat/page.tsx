@@ -15,7 +15,7 @@ import { Menu, BookMarked, HardHat, ArrowLeft } from "lucide-react";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   const {
     conversations,
@@ -49,11 +49,13 @@ export default function Home() {
     refetchInterval: 30000,
   });
 
-  // Ensure an active conversation exists on initial load
+  // Ensure active conversation and theme setup on mount
   useEffect(() => {
     if (conversations.length === 0 && !activeConversationId) {
       createConversation();
     }
+    const hasDarkClass = document.documentElement.classList.contains("dark");
+    setIsDark(hasDarkClass);
   }, [conversations.length, activeConversationId, createConversation]);
 
   // Handle theme toggle
@@ -92,47 +94,47 @@ export default function Home() {
 
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Top App Bar */}
-        <header className="flex h-14 items-center justify-between border-b border-border bg-card px-4">
+        {/* Top App Bar with high field legibility and touch targets >= 44px */}
+        <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setIsSidebarOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary md:hidden"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary md:hidden"
               aria-label="Buka menu navigasi"
             >
               <Menu className="h-5 w-5" />
             </button>
 
             <div className="flex items-center gap-2">
-              <HardHat className="h-5 w-5 text-primary md:hidden" />
+              <HardHat className="h-5 w-5 text-emerald-600 dark:text-emerald-400 md:hidden" />
               <h2 className="font-bold text-sm text-foreground truncate max-w-[200px] sm:max-w-md">
                 {activeConv?.title || "Asisten K3 Peledakan"}
               </h2>
             </div>
           </div>
 
-          {/* Right Action: Open Sources Panel & Home Link */}
-          <div className="flex items-center gap-2">
+          {/* Right Actions: Touch target >= 44px */}
+          <div className="flex items-center gap-2.5">
             <Link
               href="/"
-              className="flex min-h-[38px] items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 transition-colors"
+              className="flex min-h-[44px] items-center gap-1.5 rounded-lg border border-border bg-background px-3.5 py-2 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 transition-colors"
               title="Kembali ke Landing Page"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
+              <ArrowLeft className="h-4 w-4" />
               <span className="hidden sm:inline">Landing Page</span>
             </Link>
 
             <button
               type="button"
               onClick={() => openSourcePanel()}
-              className="flex min-h-[38px] items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-secondary active:scale-95 transition-colors"
+              className="flex min-h-[44px] items-center gap-2 rounded-lg border border-border bg-background px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-secondary active:scale-95 transition-colors"
               aria-label="Buka panel rujukan dokumen"
             >
-              <BookMarked className="h-4 w-4 text-primary" />
+              <BookMarked className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <span>Dokumen Rujukan</span>
               {sourceCount > 0 && (
-                <span className="ml-1 rounded-full bg-primary/20 px-1.5 py-0.2 text-[11px] font-bold text-primary">
+                <span className="ml-0.5 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
                   {sourceCount}
                 </span>
               )}
