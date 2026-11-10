@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useConversationStore } from "@/stores/conversation";
 import { ConfigResponse, HealthResponse } from "@/lib/api/schemas";
 import {
@@ -79,7 +80,11 @@ export function Sidebar({
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between border-b border-border p-4">
-          <div className="flex items-center gap-2.5">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+            title="Kembali ke Landing Page"
+          >
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black">
               <HardHat className="h-5 w-5" />
             </div>
@@ -91,7 +96,7 @@ export function Sidebar({
                 Peledakan Tambang
               </p>
             </div>
-          </div>
+          </Link>
 
           <button
             type="button"

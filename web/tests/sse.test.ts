@@ -88,4 +88,32 @@ describe("SSE Parser (lib/sse.ts)", () => {
       code: "LLM_TIMEOUT",
     });
   });
+
+  it("should correctly parse is_refusal in meta and done events", async () => {
+    const stream = createStream([
+      'data: {"type": "meta", "standalone_question": "Harga", "emergency": false, "notice": null, "is_refusal": true}\n\n',
+      'data: {"type": "token", "content": "Informasi tersebut tidak ditemukan..."}\n\n',
+      'data: {"type": "sources", "sources": [], "citation_ok": true, "is_refusal": true}\n\n',
+      'data: {"type": "done", "is_refusal": true}\n\n',
+    ]);
+
+    const events = [];
+    for await (const event of parseSSEStream(stream)) {
+      events.push(event);
+    }
+
+    expect(events).toHaveLength(4);
+    expect(events[0].type).toBe("meta");
+    if (events[0].type === "meta") {
+      expect(events[0].is_refusal).toBe(true);
+    }
+    expect(events[2].type).toBe("sources");
+    if (events[2].type === "sources") {
+      expect(events[2].is_refusal).toBe(true);
+    }
+    expect(events[3].type).toBe("done");
+    if (events[3].type === "done") {
+      expect(events[3].is_refusal).toBe(true);
+    }
+  });
 });

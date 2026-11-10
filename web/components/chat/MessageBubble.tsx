@@ -51,7 +51,9 @@ export function MessageBubble({
   // Check if answer is a refusal message
   const isRefusal =
     !isUser &&
-    (message.content.includes("Maaf, informasi tersebut tidak ditemukan") ||
+    (Boolean(message.is_refusal) ||
+      message.content.includes("Informasi tersebut tidak ditemukan") ||
+      message.content.includes("Maaf, informasi tersebut tidak ditemukan") ||
       message.content.includes("tidak ada dalam basis dokumen") ||
       (message.status === "completed" && message.sources && message.sources.length === 0));
 

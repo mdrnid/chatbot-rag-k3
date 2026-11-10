@@ -81,6 +81,10 @@ source .venv/bin/activate
 # Install dependensi backend
 pip install -r requirements.txt
 
+# Ingestion dokumen ke database Chroma (wajib dijalankan sebelum menyalakan server)
+python -m src.ingestion.pipeline
+# Catatan: Gunakan flag --no-embed jika hanya ingin menguji parsing/chunking tanpa embedding
+
 # Jalankan server FastAPI
 uvicorn src.api.main:app --reload --port 8000
 ```
@@ -106,7 +110,7 @@ Memverifikasi logika RAG, chunking, sanitasi, dan endpoint FastAPI:
 ```bash
 python -m pytest -q
 ```
-*(Seluruh 24 test unit backend harus lulus)*
+*(Seluruh 25 test unit backend harus lulus)*
 
 ### 2. Unit & Component Test Frontend (Vitest)
 Memverifikasi SSE parser, citation parser, Zustand store, dan komponen safety K3:
@@ -114,7 +118,7 @@ Memverifikasi SSE parser, citation parser, Zustand store, dan komponen safety K3
 cd web
 npm test # atau pnpm test
 ```
-*(Seluruh 20 test frontend harus lulus)*
+*(Seluruh 21 test frontend harus lulus)*
 
 ### 3. Build Verifikasi Next.js Standalone
 ```bash
@@ -139,7 +143,7 @@ Chatbot-RAG-K3/
 │   ├── generation/         # RAG pipeline, prompts, LLM client, guardrails
 │   ├── ingestion/          # Parser PDF, OCR, chunker, embedding pipeline
 │   └── retrieval/          # Chroma vectorstore & retriever
-├── tests/                  # Unit test backend (24 passed)
+├── tests/                  # Unit test backend (25 passed)
 │   ├── test_api.py
 │   ├── test_chunk.py
 │   ├── test_clean.py
@@ -160,5 +164,5 @@ Chatbot-RAG-K3/
     ├── hooks/              # useChatStream
     ├── lib/                # sse parser, citation parser, schemas Zod, utils
     ├── stores/             # Zustand conversation store
-    └── tests/              # Vitest unit & component test suite (20 passed)
+    └── tests/              # Vitest unit & component test suite (21 passed)
 ```

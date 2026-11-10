@@ -20,6 +20,7 @@ export interface ChatMessage {
   error?: { message: string; code?: string };
   status?: MessageStatus;
   rating?: "up" | "down";
+  is_refusal?: boolean;
 }
 
 export interface Conversation {

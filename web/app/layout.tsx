@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`dark ${inter.variable}`}>
-      <body className="min-h-screen bg-background font-sans antialiased text-foreground">
+    <html lang="id" className={`dark ${inter.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased text-foreground" suppressHydrationWarning>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

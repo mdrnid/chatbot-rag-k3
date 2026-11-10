@@ -24,6 +24,7 @@ export const StreamMetaEventSchema = z.object({
   emergency: z.boolean(),
   notice: z.string().nullable(),
   request_id: z.string().optional(),
+  is_refusal: z.boolean().optional(),
 });
 
 export const StreamTokenEventSchema = z.object({
@@ -35,11 +36,13 @@ export const StreamSourcesEventSchema = z.object({
   type: z.literal("sources"),
   sources: z.array(SourceSchema),
   citation_ok: z.boolean(),
+  is_refusal: z.boolean().optional(),
 });
 
 export const StreamDoneEventSchema = z.object({
   type: z.literal("done"),
   latency_ms: z.number().optional(),
+  is_refusal: z.boolean().optional(),
 });
 
 export const StreamErrorEventSchema = z.object({
@@ -57,10 +60,10 @@ export const StreamEventSchema = z.discriminatedUnion("type", [
 ]);
 
 export type StreamEvent =
-  | { type: "meta"; standalone_question: string; emergency: boolean; notice: string | null; request_id?: string }
+  | { type: "meta"; standalone_question: string; emergency: boolean; notice: string | null; request_id?: string; is_refusal?: boolean }
   | { type: "token"; content: string }
-  | { type: "sources"; sources: Source[]; citation_ok: boolean }
-  | { type: "done"; latency_ms?: number }
+  | { type: "sources"; sources: Source[]; citation_ok: boolean; is_refusal?: boolean }
+  | { type: "done"; latency_ms?: number; is_refusal?: boolean }
   | { type: "error"; message: string; code?: string };
 
 export const ConfigResponseSchema = z.object({
