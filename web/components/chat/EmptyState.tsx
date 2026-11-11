@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { HardHat, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
 interface EmptyStateProps {
   onSelectPrompt: (prompt: string) => void;
@@ -33,8 +34,15 @@ const EXAMPLE_PROMPTS = [
 export function EmptyState({ onSelectPrompt }: EmptyStateProps) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:py-12">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-600 ring-4 ring-emerald-500/10 dark:text-emerald-400">
-        <HardHat className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white p-1 border border-border shadow-sm ring-4 ring-emerald-500/10">
+        <Image
+          src="/logo-aryagans.jpg"
+          alt="Logo PT Aryagans Mining"
+          fill
+          sizes="64px"
+          className="object-contain p-1"
+          priority
+        />
       </div>
 
       <h2 className="mt-4 font-extrabold text-2xl text-foreground sm:text-3xl tracking-tight">

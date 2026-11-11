@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useConversationStore } from "@/stores/conversation";
 import { ConfigResponse, HealthResponse } from "@/lib/api/schemas";
 import {
@@ -85,8 +86,15 @@ export function Sidebar({
             className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
             title="Kembali ke Landing Page"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white font-black">
-              <HardHat className="h-5 w-5" />
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-white p-0.5 border border-border shadow-sm">
+              <Image
+                src="/logo-aryagans.jpg"
+                alt="Logo PT Aryagans Mining"
+                fill
+                sizes="40px"
+                className="object-contain"
+                priority
+              />
             </div>
             <div>
               <h1 className="font-extrabold text-sm leading-tight text-foreground">

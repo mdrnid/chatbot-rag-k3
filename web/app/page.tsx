@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Shield,
   ShieldCheck,
@@ -335,7 +336,7 @@ export default function LandingPage() {
     if (videoRef.current) {
       videoRef.current.muted = true;
       videoRef.current.defaultMuted = true;
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
     }
 
     const onScroll = () => {
@@ -357,16 +358,16 @@ export default function LandingPage() {
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-2.5">
-            <div
-              className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-lg shadow-sm transition-colors",
-                isScrolled
-                  ? "bg-slate-900 text-white"
-                  : "bg-white/15 border border-white/20 text-white"
-              )}
-            >
-              <Shield className="h-4 w-4" />
+          <div className="flex items-center gap-3">
+            <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-white/95 p-0.5 shadow-sm border border-slate-200/50">
+              <Image
+                src="/logo-aryagans.jpg"
+                alt="Logo PT Aryagans Mining"
+                fill
+                sizes="36px"
+                className="object-contain"
+                priority
+              />
             </div>
             <div className="flex flex-col text-left">
               <span className="text-sm font-extrabold tracking-tight leading-none">
@@ -456,8 +457,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="mt-4 text-base sm:text-lg text-slate-200 max-w-2xl mx-auto leading-relaxed drop-shadow">
-            Akses cepat Kepmen ESDM 1827/2018, Perpol 17/2017, dan SOP internal untuk Pengawas Operasional
-            dan Juru Ledak di pit. Sistem menyajikan jawaban dengan sitasi pasal resmi.
+            Rujukan cepat keselamatan dan SOP peledakan untuk Pengawas Operasional dan Juru Ledak
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-4">

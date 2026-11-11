@@ -68,7 +68,7 @@ export function ChatInput({
         onChange={handleInput}
         onKeyDown={handleKeyDown}
         disabled={disabled}
-        placeholder="Tanyakan prosedur, regulasi, atau SOP K3 peledakan... (Enter untuk kirim)"
+        placeholder="Tanyakan prosedur, regulasi, atau SOP K3 peledakan..."
         className="max-h-40 min-h-[44px] flex-1 resize-none bg-transparent px-3 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-50"
         aria-label="Input pertanyaan K3 peledakan"
       />

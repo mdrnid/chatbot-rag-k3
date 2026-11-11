@@ -11,7 +11,7 @@ import { ChatInput } from "@/components/chat/ChatInput";
 import { SourcePanel } from "@/components/sources/SourcePanel";
 import { DisclaimerBar } from "@/components/safety/DisclaimerBar";
 import { ConfigResponse, HealthResponse } from "@/lib/api/schemas";
-import { Menu, BookMarked, HardHat, ArrowLeft } from "lucide-react";
+import { Menu, BookMarked, HardHat, Home as HomeIcon } from "lucide-react";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -118,11 +118,11 @@ export default function Home() {
           <div className="flex items-center gap-2.5">
             <Link
               href="/"
-              className="flex min-h-[44px] items-center gap-1.5 rounded-lg border border-border bg-background px-3.5 py-2 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 transition-colors"
-              title="Kembali ke Landing Page"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-border bg-background p-2 text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95 transition-colors"
+              title="Kembali ke Beranda"
+              aria-label="Kembali ke Beranda"
             >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Landing Page</span>
+              <HomeIcon className="h-4 w-4" />
             </Link>
 
             <button
