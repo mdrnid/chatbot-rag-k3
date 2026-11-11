@@ -97,6 +97,7 @@ class RAGPipeline:
         p = self.prepare(question, history, doc_type)
         if not p.messages:
             answer, cited, ok = prompts.REFUSAL_MESSAGE, set(), True
+            is_refusal_flag = True
         else:
             answer = self.llm.complete(p.messages)
             cited, ok = self._check(answer, p.chunks)
@@ -110,6 +111,7 @@ class RAGPipeline:
                 cited, ok = self._check(answer, p.chunks)
             if not ok:
                 answer += prompts.NO_CITATION_WARNING
+            is_refusal_flag = is_refusal(answer)
         if p.notice:
             answer = f"{p.notice}\n\n{answer}"
         self._audit(p, ok, t0)
@@ -118,6 +120,7 @@ class RAGPipeline:
             "standalone_question": p.standalone,
             "emergency": bool(p.notice),
             "citation_ok": ok,
+            "is_refusal": is_refusal_flag,
             "sources": self._sources(p.chunks, cited),
             "disclaimer": prompts.DISCLAIMER,
         }
@@ -125,20 +128,34 @@ class RAGPipeline:
     def stream(self, question: str, history: list[dict] | None = None, doc_type: str | None = None) -> Iterator[dict]:
         t0 = time.perf_counter()
         p = self.prepare(question, history, doc_type)
-        yield {"type": "meta", "standalone_question": p.standalone, "emergency": bool(p.notice), "notice": p.notice}
+        is_refusal_initial = not bool(p.messages)
+        yield {
+            "type": "meta",
+            "standalone_question": p.standalone,
+            "emergency": bool(p.notice),
+            "notice": p.notice,
+            "is_refusal": is_refusal_initial,
+        }
         if not p.messages:
             yield {"type": "token", "content": prompts.REFUSAL_MESSAGE}
-            yield {"type": "sources", "sources": [], "citation_ok": True}
+            yield {"type": "sources", "sources": [], "citation_ok": True, "is_refusal": True}
             self._audit(p, True, t0)
-            yield {"type": "done"}
+            yield {"type": "done", "is_refusal": True}
             return
         parts: list[str] = []
         for token in self.llm.stream(p.messages):
             parts.append(token)
             yield {"type": "token", "content": token}
-        cited, ok = self._check("".join(parts), p.chunks)
+        full_answer = "".join(parts)
+        cited, ok = self._check(full_answer, p.chunks)
         if not ok:
             yield {"type": "token", "content": prompts.NO_CITATION_WARNING}
-        yield {"type": "sources", "sources": self._sources(p.chunks, cited), "citation_ok": ok}
+        is_refusal_stream = is_refusal(full_answer)
+        yield {
+            "type": "sources",
+            "sources": self._sources(p.chunks, cited),
+            "citation_ok": ok,
+            "is_refusal": is_refusal_stream,
+        }
         self._audit(p, ok, t0)
-        yield {"type": "done"}
+        yield {"type": "done", "is_refusal": is_refusal_stream}

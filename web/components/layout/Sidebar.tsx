@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { useConversationStore } from "@/stores/conversation";
 import { ConfigResponse, HealthResponse } from "@/lib/api/schemas";
 import {
@@ -79,24 +81,35 @@ export function Sidebar({
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between border-b border-border p-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black">
-              <HardHat className="h-5 w-5" />
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+            title="Kembali ke Landing Page"
+          >
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-white p-0.5 border border-border shadow-sm">
+              <Image
+                src="/logo-aryagans.jpg"
+                alt="Logo PT Aryagans Mining"
+                fill
+                sizes="40px"
+                className="object-contain"
+                priority
+              />
             </div>
             <div>
               <h1 className="font-extrabold text-sm leading-tight text-foreground">
-                Asisten K3
+                PT Aryagans
               </h1>
-              <p className="text-[11px] font-semibold text-muted-foreground">
-                Peledakan Tambang
+              <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                K3 Peledakan Pit
               </p>
             </div>
-          </div>
+          </Link>
 
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary md:hidden"
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary md:hidden"
             aria-label="Tutup sidebar"
           >
             <X className="h-5 w-5" />
@@ -108,7 +121,7 @@ export function Sidebar({
           <button
             type="button"
             onClick={handleNewChat}
-            className="flex w-full min-h-[44px] items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-bold text-primary-foreground shadow hover:bg-amber-400 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex w-full min-h-[44px] items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-bold text-white shadow hover:bg-emerald-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors"
           >
             <Plus className="h-5 w-5" />
             <span>Percakapan Baru</span>
@@ -118,13 +131,13 @@ export function Sidebar({
         {/* Filter Dokumen */}
         <div className="px-3 py-2 border-b border-border/60">
           <label className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground mb-1.5">
-            <Filter className="h-3.5 w-3.5 text-primary" />
+            <Filter className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Filter Jenis Dokumen</span>
           </label>
           <select
             value={docTypeFilter || ""}
             onChange={(e) => setDocTypeFilter(e.target.value || null)}
-            className="w-full min-h-[40px] rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full min-h-[44px] rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500"
             aria-label="Pilih filter jenis dokumen rujukan"
           >
             <option value="">Semua Dokumen</option>
@@ -158,18 +171,18 @@ export function Sidebar({
               return (
                 <div
                   key={conv.id}
-                  className={`group flex items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors ${
+                  className={`group flex items-center justify-between rounded-lg px-2 py-1 text-xs transition-colors ${
                     isActive
-                      ? "bg-secondary font-bold text-foreground"
+                      ? "bg-secondary font-bold text-foreground border-l-2 border-emerald-600"
                       : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
                   }`}
                 >
                   <button
                     type="button"
                     onClick={() => handleSelectConv(conv.id)}
-                    className="flex flex-1 items-center gap-2 truncate text-left min-h-[36px]"
+                    className="flex flex-1 items-center gap-2 truncate text-left min-h-[44px] px-1"
                   >
-                    <MessageSquare className="h-4 w-4 shrink-0 text-primary" />
+                    <MessageSquare className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
                     <span className="truncate">{conv.title}</span>
                   </button>
 
@@ -179,11 +192,11 @@ export function Sidebar({
                       e.stopPropagation();
                       deleteConversation(conv.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-red-500 transition-opacity focus:opacity-100"
+                    className="opacity-0 group-hover:opacity-100 min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-red-500 transition-opacity focus:opacity-100"
                     aria-label={`Hapus percakapan: ${conv.title}`}
                     title="Hapus percakapan"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
               );
@@ -191,34 +204,17 @@ export function Sidebar({
           )}
         </div>
 
-        {/* Footer: Status Sistem & Theme Toggle */}
-        <div className="border-t border-border p-3 space-y-2 bg-card/60">
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1.5">
-              {isOnline ? (
-                <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-              ) : (
-                <XCircle className="h-3.5 w-3.5 text-muted-foreground" />
-              )}
-              <span className="font-semibold text-foreground">
-                {isOnline ? "Sistem Online" : "Backend Offline"}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
-              aria-label="Ubah tema"
-              title={isDark ? "Ganti ke Mode Terang" : "Ganti ke Mode Gelap"}
-            >
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-          </div>
-
-          <div className="text-[11px] text-muted-foreground font-mono truncate">
-            Model: {health?.model || config?.model || "qwen2.5:7b"}
-          </div>
+        {/* Footer: Theme Toggle */}
+        <div className="border-t border-border p-3 flex items-center justify-end bg-card/60">
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
+            aria-label="Ubah tema"
+            title={isDark ? "Ganti ke Mode Terang" : "Ganti ke Mode Gelap"}
+          >
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
         </div>
       </aside>
     </>

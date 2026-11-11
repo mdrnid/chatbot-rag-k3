@@ -15,14 +15,12 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
     Boolean(source.metadata?.replaced_by);
   const replacedBy = (source.metadata?.replaced_by as string) || "Dokumen Pengganti Terkait";
 
-  const scorePercent = Math.min(Math.round(source.score * 100), 100);
-
   return (
     <article
       id={`source-${source.id}`}
-      className={`rounded-lg border p-4 transition-all ${
+      className={`rounded-xl border p-4 transition-all ${
         isHighlighted
-          ? "border-primary bg-primary/10 ring-2 ring-primary"
+          ? "border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/30 ring-2 ring-emerald-500/40"
           : "border-border bg-card hover:border-muted-foreground/40"
       }`}
     >
@@ -39,8 +37,8 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
 
         <div className="flex flex-wrap items-center gap-1.5">
           {source.cited && (
-            <span className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-bold text-foreground">
-              <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+            <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/15 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Dikutip</span>
             </span>
           )}
@@ -49,7 +47,7 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
           {isRevoked && (
             <span
               role="alert"
-              className="inline-flex items-center gap-1 rounded-md border border-red-600 bg-red-600 px-2 py-0.5 text-xs font-black text-white shadow-sm dark:bg-red-700"
+              className="inline-flex items-center gap-1 rounded-md border border-rose-600 bg-rose-600 px-2 py-0.5 text-xs font-black text-white shadow-sm dark:bg-rose-700"
             >
               <AlertTriangle className="h-3.5 w-3.5 text-white" />
               <span>DICABUT → Digantikan oleh {replacedBy}</span>
@@ -66,22 +64,8 @@ export function SourceCard({ source, isHighlighted = false }: SourceCardProps) {
         </h4>
       </div>
 
-      {/* Relevansi Progress Bar */}
-      <div className="mt-3">
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-          <span>Skor Relevansi</span>
-          <span className="font-bold text-foreground">{scorePercent}%</span>
-        </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <div
-            className="h-full bg-primary transition-all duration-500 rounded-full"
-            style={{ width: `${scorePercent}%` }}
-          />
-        </div>
-      </div>
-
       {/* Snippet Teks Rujukan */}
-      <div className="mt-3 rounded-md bg-muted/60 p-3 text-xs leading-relaxed text-foreground/90 font-mono">
+      <div className="mt-3 rounded-md bg-muted/50 p-3 text-xs leading-relaxed text-foreground/90 font-sans">
         <p className="whitespace-pre-wrap">{source.snippet}</p>
       </div>
 

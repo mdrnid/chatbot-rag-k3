@@ -119,6 +119,7 @@ export function useChatStream() {
               emergency: event.emergency,
               notice: event.notice,
               request_id: event.request_id,
+              ...(event.is_refusal !== undefined ? { is_refusal: event.is_refusal } : {}),
             });
           } else if (event.type === "token") {
             if (!firstTokenReceived) {
@@ -134,6 +135,7 @@ export function useChatStream() {
             updateMessage(convId, assistantMsgId, {
               sources: event.sources,
               citation_ok: event.citation_ok,
+              ...(event.is_refusal !== undefined ? { is_refusal: event.is_refusal } : {}),
             });
           } else if (event.type === "done") {
             const latency_ms =
@@ -141,6 +143,7 @@ export function useChatStream() {
             updateMessage(convId, assistantMsgId, {
               latency_ms,
               status: "completed",
+              ...(event.is_refusal !== undefined ? { is_refusal: event.is_refusal } : {}),
             });
           } else if (event.type === "error") {
             updateMessage(convId, assistantMsgId, {
@@ -273,6 +276,7 @@ export function useChatStream() {
               emergency: event.emergency,
               notice: event.notice,
               request_id: event.request_id,
+              ...(event.is_refusal !== undefined ? { is_refusal: event.is_refusal } : {}),
             });
           } else if (event.type === "token") {
             if (!firstTokenReceived) {
@@ -288,12 +292,14 @@ export function useChatStream() {
             updateMessage(convId, assistantMsgId, {
               sources: event.sources,
               citation_ok: event.citation_ok,
+              ...(event.is_refusal !== undefined ? { is_refusal: event.is_refusal } : {}),
             });
           } else if (event.type === "done") {
             updateMessage(convId, assistantMsgId, {
               latency_ms:
                 event.latency_ms ?? Math.round(performance.now() - t0),
               status: "completed",
+              ...(event.is_refusal !== undefined ? { is_refusal: event.is_refusal } : {}),
             });
           } else if (event.type === "error") {
             updateMessage(convId, assistantMsgId, {

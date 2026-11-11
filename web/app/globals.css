@@ -13,39 +13,55 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 38 92% 50%; /* Safety Amber/Gold */
-    --primary-foreground: 222 47% 11%;
+    --primary: 160 84% 39%; /* Emerald 600 (#059669) - Aksen Utama K3 */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 25% 91%;
+    --secondary: 210 20% 96%;
     --secondary-foreground: 222 47% 11%;
 
-    --muted: 215 25% 94%;
+    --muted: 215 20% 95%;
     --muted-foreground: 215 16% 40%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 160 84% 39%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%; /* ONLY FOR EMERGENCY & DICABUT */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 346 84% 50%; /* Rose 600 (#e11d48) - Khusus Darurat & Dicabut */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 85%;
-    --input: 214 32% 85%;
-    --ring: 38 92% 50%;
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 160 84% 39%;
 
     --radius: 0.5rem;
+
+    /* Extended Streaming Text & Surface Tokens */
+    --page: #fafafb;
+    --canvas: #f1f2f3;
+    --surface: #ffffff;
+    --inset: #f7f8f9;
+    --hover: #f4f5f6;
+    --hover-2: #e7e9eb;
+    --ink: #1f2124;
+    --ink-2: #62656b;
+    --ink-3: #9a9da3;
+    --line: #ecedef;
+    --line-strong: #e0e2e5;
+    --radius-control: 8px;
+    --ease-link: cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-hairline: 0 0 0 1px var(--line);
   }
 
   .dark {
-    --background: 222 47% 8%;
+    --background: 222 47% 7%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 12%;
+    --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 38 92% 50%;
+    --primary: 158 64% 52%; /* Emerald 500 (#10b981) */
     --primary-foreground: 222 47% 11%;
 
     --secondary: 217 33% 18%;
@@ -54,15 +70,31 @@
     --muted: 217 33% 16%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 38 92% 50%;
+    --accent: 158 64% 52%;
     --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 75% 55%;
+    --destructive: 346 77% 49%; /* Rose 600 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 24%;
-    --input: 217 33% 24%;
-    --ring: 38 92% 50%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 158 64% 52%;
+
+    /* Extended Streaming Text & Surface Tokens (Dark Mode) */
+    --page: #0f172a;
+    --canvas: #1e293b;
+    --surface: #0f172a;
+    --inset: #1e293b;
+    --hover: #334155;
+    --hover-2: #475569;
+    --ink: #f8fafc;
+    --ink-2: #cbd5e1;
+    --ink-3: #94a3b8;
+    --line: #334155;
+    --line-strong: #475569;
+    --radius-control: 8px;
+    --ease-link: cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-hairline: 0 0 0 1px var(--line);
   }
 
   * {
@@ -76,7 +108,48 @@
   }
 
   /* Tap targets >= 44px */
-  button, input, select, textarea, a.tap-target {
+  button:not([class*="size-"]):not([class*="h-"]):not([class*="min-h-"]), input, select, textarea, a.tap-target {
     min-height: 44px;
   }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated-underline {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 150ms ease;
+}
+.animated-underline:hover {
+  text-decoration-color: currentColor;
 }
