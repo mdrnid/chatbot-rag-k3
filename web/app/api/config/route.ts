@@ -6,7 +6,8 @@ const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8000";
 
 export async function GET() {
   try {
-    const res = await fetch(`${BACKEND_URL}/config`, {
+    const targetUrl = new URL("config", BACKEND_URL.endsWith("/") ? BACKEND_URL : `${BACKEND_URL}/`);
+    const res = await fetch(targetUrl, {
       headers: { "Content-Type": "application/json" },
       cache: "no-store",
     });

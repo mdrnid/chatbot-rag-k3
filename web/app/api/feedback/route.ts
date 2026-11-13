@@ -7,7 +7,8 @@ const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8000";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const res = await fetch(`${BACKEND_URL}/feedback`, {
+    const targetUrl = new URL("feedback", BACKEND_URL.endsWith("/") ? BACKEND_URL : `${BACKEND_URL}/`);
+    const res = await fetch(targetUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
