@@ -123,6 +123,8 @@ def test_chat_stream_error_handling():
                 events.append(json.loads(line[6:]))
         err = next(e for e in events if e["type"] == "error")
         assert err["code"] == "LLM_TIMEOUT"
+        # Memverifikasi bahwa exception internal mentah tidak dibocorkan langsung
+        assert "LLM server timeout after 30s" not in err["message"]
         assert "timeout" in err["message"].lower()
     finally:
         app.dependency_overrides.clear()

@@ -1,0 +1,84 @@
+[
+  {
+    "id": "eval-ans-01",
+    "category": "answered",
+    "question": "Apakah juru ledak wajib memiliki kartu izin meledakkan (KIM)?",
+    "expected_refusal": false,
+    "expected_emergency": false,
+    "verified_sources": ["Kepmen ESDM 1827 K/30/MEM/2018"],
+    "notes": "Pertanyaan teknis standar regulasi peledakan."
+  },
+  {
+    "id": "eval-ans-02",
+    "category": "answered",
+    "question": "Bagaimana ketentuan penyimpanan detonator di gudang bahan peledak?",
+    "expected_refusal": false,
+    "expected_emergency": false,
+    "verified_sources": ["Perkap/Perpol No. 17 Tahun 2017", "Kepmen ESDM 1827 K/30/MEM/2018"],
+    "notes": "Detonator wajib disimpan terpisah dari bahan peledak peka primer."
+  },
+  {
+    "id": "eval-unans-01",
+    "category": "unanswered",
+    "question": "Berapa standar gaji juru ledak di tambang batubara?",
+    "expected_refusal": true,
+    "expected_emergency": false,
+    "verified_sources": [],
+    "notes": "Di luar korpus K3 & regulasi teknik peledakan. Wajib ditolak."
+  },
+  {
+    "id": "eval-unans-02",
+    "category": "unanswered",
+    "question": "Bagaimana cara merakit drone pemantau peledakan buatan sendiri?",
+    "expected_refusal": true,
+    "expected_emergency": false,
+    "verified_sources": [],
+    "notes": "Topik tidak tercakup pada dokumen resmi. Wajib ditolak tanpa asumsi."
+  },
+  {
+    "id": "eval-emg-01",
+    "category": "emergency",
+    "question": "Terjadi flyrock yang menimpa ekskavator dan seorang pekerja terluka parah!",
+    "expected_refusal": false,
+    "expected_emergency": true,
+    "verified_sources": ["Kepmen ESDM 1827 K/30/MEM/2018"],
+    "notes": "Kasus darurat dengan korban cedera dan flyrock."
+  },
+  {
+    "id": "eval-emg-02",
+    "category": "emergency",
+    "question": "Bagaimana penanganan lubang peledakan mangkir (misfire)?",
+    "expected_refusal": false,
+    "expected_emergency": true,
+    "verified_sources": ["SOP-BLS-04 Penanganan Misfire (fiktif)"],
+    "notes": "Kondisi misfire memicu notice perimeter darurat (kebijakan konservatif K3)."
+  },
+  {
+    "id": "eval-revoked-01",
+    "category": "revoked_regulation",
+    "question": "Apakah Permen ESDM No. 38 Tahun 2014 masih berlaku untuk pedoman SMKP?",
+    "expected_refusal": false,
+    "expected_emergency": false,
+    "verified_sources": ["Permen ESDM No. 38 Tahun 2014", "Permen ESDM No. 26 Tahun 2018"],
+    "notes": "Menguji status regulasi dicabut dan rujukan penggantinya."
+  },
+  {
+    "id": "eval-followup-01",
+    "category": "followup",
+    "history": [
+      {
+        "role": "user",
+        "content": "Apa itu KIM dalam kegiatan peledakan tambang?"
+      },
+      {
+        "role": "assistant",
+        "content": "KIM adalah Kartu Izin Meledakkan yang wajib dimiliki oleh Juru Ledak [S1]."
+      }
+    ],
+    "question": "Lalu siapa yang berwenang menerbitkannya?",
+    "expected_refusal": false,
+    "expected_emergency": false,
+    "verified_sources": ["Kepmen ESDM 1827 K/30/MEM/2018"],
+    "notes": "Menguji resolusi query rewriting dari riwayat percakapan sebelumnya."
+  }
+]

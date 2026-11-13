@@ -4,6 +4,9 @@ __pycache__/
 logs/
 data/chroma/
 data/processed/
+# Dokumen mentah pribadi/dokumen tidak relevan
+data/raw/**/*.docx
+data/raw/*.docx
 # PDF tidak di-commit (SNI berbayar tidak boleh masuk repo publik)
 data/raw/**/*.pdf
 

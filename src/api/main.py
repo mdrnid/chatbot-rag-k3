@@ -64,7 +64,16 @@ def get_pipeline() -> RAGPipeline:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "model": settings.llm_model, "collection": settings.collection}
+    from pathlib import Path
+
+    chroma_exists = Path(settings.chroma_dir).exists()
+    return {
+        "status": "ok",
+        "ready": chroma_exists,
+        "model": settings.llm_model,
+        "collection": settings.collection,
+        "chroma_dir_exists": chroma_exists,
+    }
 
 @app.get("/config")
 def get_config() -> dict:
@@ -117,15 +126,17 @@ def chat_stream(req: ChatRequest, pipeline: RAGPipeline = Depends(get_pipeline))
                 yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
         except Exception as exc:
             log.exception("Streaming gagal req_id=%s: %s", request_id, exc)
-            err_msg = str(exc)
-            err_lower = err_msg.lower()
-            if "timeout" in err_lower or isinstance(exc, TimeoutError):
+            exc_str = str(exc).lower()
+            if "timeout" in exc_str or isinstance(exc, TimeoutError):
                 code = "LLM_TIMEOUT"
-            elif "retriev" in err_lower:
+                safe_msg = "Permintaan ke model bahasa melebihi batas waktu (timeout). Silakan coba lagi."
+            elif "retriev" in exc_str:
                 code = "RETRIEVAL_FAILED"
+                safe_msg = "Gagal mengambil dokumen rujukan dari basis data. Silakan hubungi administrator."
             else:
                 code = "INTERNAL_ERROR"
-            err_ev = {"type": "error", "message": err_msg, "code": code}
+                safe_msg = "Terjadi kesalahan internal pada sistem. Silakan coba beberapa saat lagi."
+            err_ev = {"type": "error", "message": safe_msg, "code": code}
             yield f"data: {json.dumps(err_ev, ensure_ascii=False)}\n\n"
 
     return StreamingResponse(

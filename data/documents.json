@@ -47,5 +47,45 @@
         "tahun": 2026,
         "status": "berlaku",
         "topik": "misfire"
+      },
+      {
+        "file": "sop_01_gudang_handak.pdf",
+        "doc_title": "SOP-BLS-01 Pengelolaan Gudang Handak (fiktif)",
+        "doc_type": "sop",
+        "tahun": 2026,
+        "status": "berlaku",
+        "topik": "gudang handak"
+      },
+      {
+        "file": "sop_02_charging_tie_in.pdf",
+        "doc_title": "SOP-BLS-02 Charging dan Tie-In (fiktif)",
+        "doc_type": "sop",
+        "tahun": 2026,
+        "status": "berlaku",
+        "topik": "charging dan tie-in"
+      },
+      {
+        "file": "sop_03_blokade_radius_aman.pdf",
+        "doc_title": "SOP-BLS-03 Blokade dan Radius Aman (fiktif)",
+        "doc_type": "sop",
+        "tahun": 2026,
+        "status": "berlaku",
+        "topik": "radius aman"
+      },
+      {
+        "file": "sop_05_inspeksi_pasca_ledak.pdf",
+        "doc_title": "SOP-BLS-05 Inspeksi Pasca Ledak (fiktif)",
+        "doc_type": "sop",
+        "tahun": 2026,
+        "status": "berlaku",
+        "topik": "inspeksi pasca ledak"
+      },
+      {
+        "file": "sop_06_cuaca_buruk_darurat.pdf",
+        "doc_title": "SOP-BLS-06 Penanganan Cuaca Buruk dan Darurat (fiktif)",
+        "doc_type": "sop",
+        "tahun": 2026,
+        "status": "berlaku",
+        "topik": "darurat cuaca buruk"
       }
     ]

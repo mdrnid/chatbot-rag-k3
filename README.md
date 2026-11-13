@@ -1,89 +1,126 @@
-# ⛑️ Asisten K3 Peledakan (RAG, Level 2 + Web Next.js 15)
+# ⛑️ Asisten K3 Peledakan (Prototipe RAG K3 — Level 2 + Web Next.js 15)
 
-Chatbot RAG untuk Pengawas peledakan di tambang terbuka batubara. Menjawab **hanya** dari dokumen, **selalu dengan sitasi** `[S#]` (dokumen, pasal, halaman), dan menolak bila informasi tidak ada di basis dokumen.
+Prototipe asisten RAG berbahasa Indonesia untuk **Pengawas Peledakan di tambang terbuka batubara**. Sistem dirancang untuk menjawab pertanyaan teknis berbasis dokumen terdaftar, menyertakan sitasi tag rujukan `[S#]`, serta menolak pertanyaan yang berada di luar basis pengetahuan atau di bawah ambang batas kesesuaian.
 
-> SOP di `data/raw/sop/` adalah **fiktif** untuk portfolio. Chatbot bukan pengganti SOP resmi & arahan Pengawas/KTT.
-
----
-
-## 🌟 Fitur Utama
-- **Backend FastAPI & RAG Engine**:
-  - Ingestion PDF (PyMuPDF) + OCR otomatis (Tesseract `ind`) untuk scan fisik.
-  - Chunking struktural (Lampiran/BAB/Bagian/Pasal/Langkah SOP) + metadata lengkap.
-  - Sitasi wajib `[S#]` dengan verifikasi dan retry otomatis jika sitasi terlewat.
-  - Penolakan tegas (`REFUSAL_MESSAGE`) jika skor kemiripan < `SCORE_THRESHOLD`.
-  - Penandaan regulasi dicabut (`replaced_by`) dengan badge merah khusus.
-  - Deteksi darurat K3 (`is_emergency`) yang memunculkan notice darurat di awal jawaban dan event SSE.
-  - Streaming respons menggunakan Server-Sent Events (SSE).
-  - Endpoint `/config`, `/health`, `/chat`, `/chat/stream`, dan `/feedback` yang tercatat di audit log.
-- **Frontend Produksi Next.js 15 (App Router) & TypeScript**:
-  - Desain Mobile-First & High-Contrast (amber/safety theme) ramah pembacaan di lapangan/tambang.
-  - Base font size >= 16px, target sentuh (tap target) >= 44px.
-  - Aturan warna ketat: Warna **merah** hanya digunakan untuk `EmergencyBanner` dan badge dokumen `DICABUT`.
-  - Parser SSE yang resilien terhadap chunk terpotong dan validasi skema runtime (Zod).
-  - Chip sitasi interaktif (`[S1]`) dengan popover ringkasan dan pembuka drawer rujukan dokumen.
-  - Panel rujukan dokumen (Drawer kanan desktop / Bottom sheet mobile) dengan visualisasi bar relevansi skor.
-  - Multi-session conversation management dengan Zustand + `localStorage` persistence.
-  - Dukungan mode Gelap / Terang (Dark/Light mode).
+> ⚠️ **Pemberitahuan Batasan & Keselamatan**:
+> 1. Proyek ini adalah **prototipe portofolio AI Engineering**, BUKAN sistem siap produksi (production-ready).
+> 2. Sistem ini **BUKAN pengganti** Standar Operasional Prosedur (SOP) resmi perusahaan, regulasi perundang-undangan, arahan Pengawas Operasional, wewenang Kepala Teknik Tambang (KTT), maupun layanan darurat resmi.
+> 3. Dokumen SOP di `data/raw/sop/` bersifat **fiktif** untuk keperluan uji mekanisme portofolio.
+> 4. Validasi sitasi saat ini memverifikasi format kemunculan tag sitasi `[S#]`, dan **bukan pembuktian matematis entailment/faithfulness faktual mutlak**. Selalu lakukan verifikasi silang ke dokumen fisik/resmi.
 
 ---
 
-## 🛠️ Prasyarat & Variabel Environment
+## 🏗️ Arsitektur Sistem
 
-Salin file `.env.example` ke `.env`:
+```mermaid
+flowchart TD
+    User([Pengguna / Pengawas Pit]) -->|Pertanyaan & Riwayat| WebUI[Next.js 15 Web App /chat]
+    WebUI -->|SSE Stream /chat/stream| API[FastAPI BFF Server]
+    
+    subgraph Guardrails & Routing
+        API --> GuardrailCheck{Deteksi Darurat K3?}
+        GuardrailCheck -->|Ya| EmgNotice[Munculkan Notice Darurat Segera]
+        GuardrailCheck -->|Lanjut| QueryRewrite[Query Rewriting / Condense Memory]
+    end
+    
+    subgraph Ingestion & Retrieval
+        QueryRewrite --> Retriever[Retriever Engine]
+        Retriever -->|Embed Query| E5[multilingual-e5-base]
+        E5 --> Chroma[(ChromaDB Vectorstore)]
+        Chroma -->|Cosine Similarity| FilterThreshold{Skor >= 0.78?}
+    end
+    
+    subgraph Generation & Validation
+        FilterThreshold -->|Tidak| Refusal[Penolakan Standar Tanpa LLM]
+        FilterThreshold -->|Ya| LLM[LLM OpenAI-Compatible]
+        LLM --> CitationCheck{Validasi ID Sitasi [S#]?}
+        CitationCheck -->|Belum ada| RetryLLM[Retry Prompt 1x]
+        CitationCheck -->|Tetap tidak ada| CitationWarn[Warning Sitasi Tidak Valid]
+    end
+
+    EmgNotice --> StreamResponse[Server-Sent Events]
+    Refusal --> StreamResponse
+    LLM --> StreamResponse
+    CitationWarn --> StreamResponse
+    StreamResponse --> WebUI
+```
+
+---
+
+## 🌟 Fitur & Status Implementasi
+
+| Komponen | Status Implementasi | Catatan & Batasan |
+|---|---|---|
+| **Deteksi Darurat** | Aktif (Regex K3) | Mencakup insiden, korban, flyrock, misfire/mangkir. Mengutamakan fail-safe (false-positive pada teks konseptual). |
+| **Penolakan Konteks** | Aktif | Menolak deterministik tanpa panggil LLM bila skor kemiripan < `SCORE_THRESHOLD` (0.78). |
+| **Sitasi ID `[S#]`** | Aktif (Verifikasi ID) | Memastikan ID sumber terdaftar muncul di teks jawaban. *Catatan: Tidak memverifikasi entailment semantik penuh.* |
+| **Regulasi Dicabut** | Aktif | Menampilkan penanda khusus regulasi dicabut (`replaced_by`) pada sumber rujukan. |
+| **Streaming & Error** | Aktif (SSE) | Sanitasi error internal agar tidak membocorkan stack trace sistem. |
+
+---
+
+## 📚 Status Dokumen: Terdaftar vs Tersedia vs Terindeks
+
+Penting untuk membedakan status dokumen dalam repositori ini:
+
+1. **Dokumen Terdaftar (`data/documents.json`)**:
+   Metadata regulasi resmi (Kepmen ESDM 1827/2018, Permen ESDM 26/2018, Perpol 17/2017, Permen ESDM 38/2014) dan SOP fiktif yang dicatat sebagai acuan skema sistem.
+2. **File Tersedia (`data/raw/`)**:
+   - File markdown SOP sintetis (`data/raw/sop/sop_04_penanganan_misfire.md`) tersedia di repo.
+   - File PDF regulasi nasional yang berhak cipta atau dokumen internal **tidak didistribusikan** secara bebas di dalam repositori publik.
+3. **Dokumen Terindeks (`data/chroma/`)**:
+   Indeks vektor lokal yang dihasilkan dari proses ingestion (`python -m src.ingestion.pipeline`). Endpoint `/health` menyediakan status readiness apakah indeks telah dibangun di lokal.
+
+---
+
+## 🛠️ Prasyarat & Variabel Lingkungan
+
+Salin template konfigurasi:
 ```bash
 cp .env.example .env
 ```
 
-### Variabel Environment Backend (`.env`):
+### Variabel Lingkungan Backend (`.env`):
 | Variabel | Deskripsi | Default |
 |---|---|---|
-| `LLM_BASE_URL` | Base URL endpoint OpenAI-compatible | `http://localhost:11434/v1` |
+| `LLM_BASE_URL` | Base URL endpoint OpenAI-compatible (Ollama / vLLM / OpenAI) | `http://localhost:11434/v1` |
 | `LLM_API_KEY` | API Key LLM | `ollama` |
 | `LLM_MODEL` | Model LLM yang digunakan | `qwen2.5:7b` |
 | `SCORE_THRESHOLD` | Ambang batas cosine similarity dokumen | `0.78` |
 | `HISTORY_TURNS` | Jumlah riwayat pesan untuk query rewriting | `6` |
-| `EMERGENCY_CONTACT_NAME` | Nama kontak tim tanggap darurat | `ERT` |
-| `EMERGENCY_CONTACT_PHONE` | Nomor telepon darurat ERT | `112` |
+| `EMERGENCY_CONTACT_NAME` | Nama tim tanggap darurat (konfigurasi per site) | `ERT Site (Contoh)` |
+| `EMERGENCY_CONTACT_PHONE` | Nomor kontak darurat site | `112` |
 | `CORS_ORIGINS` | Origin yang diizinkan untuk CORS | `http://localhost:3000` |
-
-### Variabel Environment Frontend (`web/.env.local` - opsional):
-| Variabel | Deskripsi | Default |
-|---|---|---|
-| `BACKEND_URL` | URL endpoint backend FastAPI | `http://localhost:8000` |
-| `NEXT_PUBLIC_DEBUG_MODE` | Tampilkan metrik latensi, TTFT, dan model | `false` |
 
 ---
 
 ## 🚀 Panduan Menjalankan
 
-### Cara 1: Menjalankan dengan Docker Compose (Direkomendasikan)
-Menjalankan FastAPI backend dan Next.js web application secara bersamaan:
+### Cara 1: Menjalankan dengan Docker Compose
 ```bash
 docker compose up --build
 ```
 - Web Application: [http://localhost:3000](http://localhost:3000)
 - FastAPI Documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
-
----
+- Liveness & Readiness: [http://localhost:8000/health](http://localhost:8000/health)
 
 ### Cara 2: Menjalankan Secara Lokal
 
 #### 1. Setup Backend (Python 3.11+)
 ```bash
-# Aktifkan virtual environment
 python -m venv .venv
 # Windows:
 .venv\Scripts\Activate.ps1
 # Linux/macOS:
 source .venv/bin/activate
 
-# Install dependensi backend
 pip install -r requirements.txt
 
-# Ingestion dokumen ke database Chroma (wajib dijalankan sebelum menyalakan server)
+# Pengujian ekstraksi & chunking tanpa embedding model:
+python -m src.ingestion.pipeline --no-embed
+
+# Ingestion penuh ke database Chroma (jika PDF/SOP tersedia):
 python -m src.ingestion.pipeline
-# Catatan: Gunakan flag --no-embed jika hanya ingin menguji parsing/chunking tanpa embedding
 
 # Jalankan server FastAPI
 uvicorn src.api.main:app --reload --port 8000
@@ -92,77 +129,34 @@ uvicorn src.api.main:app --reload --port 8000
 #### 2. Setup Frontend Next.js 15 (`web/`)
 ```bash
 cd web
-
-# Install dependensi frontend
-npm install # atau pnpm install
-
-# Jalankan development server
-npm run dev # atau pnpm dev
+npm install
+npm run dev
 ```
-Buka peramban di [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🧪 Menjalankan Pengujian (Testing)
+## 🧪 Evaluasi & Pengujian
 
 ### 1. Unit Test Backend (Pytest)
-Memverifikasi logika RAG, chunking, sanitasi, dan endpoint FastAPI:
+Memverifikasi logika RAG, chunking, sanitasi error, dan guardrail K3:
 ```bash
 python -m pytest -q
 ```
-*(Seluruh 25 test unit backend harus lulus)*
 
-### 2. Unit & Component Test Frontend (Vitest)
-Memverifikasi SSE parser, citation parser, Zustand store, dan komponen safety K3:
+### 2. Runner Evaluasi Terukur (P2)
+Mengevaluasi akurasi deteksi darurat dan metrik penolakan berbasis dataset uji:
+```bash
+python scripts/run_eval.py
+```
+
+### 3. Unit & Component Test Frontend (Vitest)
 ```bash
 cd web
-npm test # atau pnpm test
+npm test
 ```
-*(Seluruh 21 test frontend harus lulus)*
 
-### 3. Build Verifikasi Next.js Standalone
+### 4. Build Verifikasi Next.js Standalone
 ```bash
 cd web
 npm run build
-```
-
----
-
-## 📋 Struktur Direktori Proyek
-
-```text
-Chatbot-RAG-K3/
-├── Dockerfile              # Dockerfile backend FastAPI
-├── docker-compose.yml      # Orkestrasi Docker (api:8000 & web:3000)
-├── requirements.txt        # Dependensi Python
-├── .env.example            # Template konfigurasi env
-├── data/                   # Data dokumen regulasi & SOP
-├── src/                    # Backend FastAPI & RAG core logic
-│   ├── api/main.py         # Endpoints: /health, /config, /chat, /chat/stream, /feedback
-│   ├── config.py           # Konfigurasi terpusat Settings
-│   ├── generation/         # RAG pipeline, prompts, LLM client, guardrails
-│   ├── ingestion/          # Parser PDF, OCR, chunker, embedding pipeline
-│   └── retrieval/          # Chroma vectorstore & retriever
-├── tests/                  # Unit test backend (25 passed)
-│   ├── test_api.py
-│   ├── test_chunk.py
-│   ├── test_clean.py
-│   └── test_rag.py
-└── web/                    # Frontend Next.js 15 App Router
-    ├── Dockerfile          # Multi-stage standalone build
-    ├── next.config.ts      # output: "standalone"
-    ├── app/
-    │   ├── api/            # BFF Route Handlers (/chat/stream, /config, /health, /feedback)
-    │   ├── globals.css     # Theme safety high-contrast
-    │   ├── layout.tsx
-    │   └── page.tsx        # UI Utama
-    ├── components/
-    │   ├── chat/           # CitationChip, MessageBubble, MessageList, ChatInput, EmptyState
-    │   ├── layout/         # Sidebar (riwayat & filter dokumen)
-    │   ├── safety/         # EmergencyBanner, CitationWarning, RefusalState, DisclaimerBar
-    │   └── sources/        # SourcePanel (drawer/sheet) & SourceCard
-    ├── hooks/              # useChatStream
-    ├── lib/                # sse parser, citation parser, schemas Zod, utils
-    ├── stores/             # Zustand conversation store
-    └── tests/              # Vitest unit & component test suite (21 passed)
 ```

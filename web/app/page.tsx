@@ -23,78 +23,88 @@ import { cn } from "@/lib/utils";
 import { MessageLoading } from "@/components/ui/message-loading";
 
 interface DemoAnswer {
+  scenarioTitle: string;
   question: string;
   emergency: { icon: React.ReactNode; text: string } | null;
   body: string;
   points: string[];
   citations: { id: string; title: string }[];
+  note: string;
 }
 
 const SOP_DEMOS: Record<string, DemoAnswer> = {
   misfire: {
-    question: "Bagaimana prosedur penanganan lubang peledakan mangkir (misfire) di pit PT Aryagans?",
+    scenarioTitle: "Penanganan Misfire (SOP Fiktif + Regulasi)",
+    question: "Bagaimana prosedur penanganan lubang peledakan mangkir (misfire)?",
     emergency: {
       icon: <AlertTriangle className="h-4 w-4" />,
       text: "PERINGATAN DARURAT: Dilarang mendekati lubang ledak selama waktu tunggu berlangsung!",
     },
-    body: "Sesuai prosedur internal SOP-AG-BLS-04 dan Kepmen ESDM No. 1827/2018 Lampiran II:",
+    body: "Contoh ilustrasi prosedur (menggabungkan SOP-BLS-04 fiktif & rujukan umum Kepmen ESDM 1827/2018):",
     points: [
       "Pasang barikade isolasi dan rambu peringatan di seluruh akses menuju lokasi misfire.",
-      "Patuhi waktu tunggu minimal sesuai instruksi tertulis KTT sebelum pemeriksaan area.",
-      "Pemeriksaan hanya dapat dilakukan oleh Juru Ledak ber-KIM bersama Pengawas Peledakan.",
+      "Patuhi waktu tunggu minimal sesuai ketetapan KTT/regulasi sebelum pemeriksaan area.",
+      "Pemeriksaan hanya dapat dilakukan oleh Juru Ledak ber-KIM didampingi Pengawas Peledakan.",
       "Dilarang menarik leg wire atau mengebor ulang lubang misfire.",
     ],
     citations: [
-      { id: "S1", title: "SOP-AG-BLS-04 Penanganan Misfire (PT Aryagans)" },
-      { id: "S2", title: "Kepmen ESDM 1827 K/30/MEM/2018 Lamp. II" },
+      { id: "S1", title: "SOP-BLS-04 Penanganan Misfire (Contoh Fiktif Portfolio)" },
+      { id: "S2", title: "Kepmen ESDM 1827 K/30/MEM/2018 Lampiran II/III" },
     ],
+    note: "Contoh ini merupakan simulasi kurasi statis untuk portofolio. Rujukan angka dan SOP lapangan wajib diverifikasi ke dokumen resmi perusahaan.",
   },
   gudang_handak: {
-    question: "Apa saja ketentuan pengamanan gudang bahan peledak di site PT Aryagans?",
+    scenarioTitle: "Pengamanan Gudang Handak",
+    question: "Apa saja ketentuan pengamanan gudang bahan peledak?",
     emergency: null,
-    body: "Berdasarkan Perkap/Perpol No. 17 Tahun 2017 dan Kepmen ESDM No. 1827/2018 Lampiran II:",
+    body: "Ilustrasi poin pengamanan berdasarkan rujukan umum Perpol No. 17/2017 & Kepmen ESDM No. 1827/2018:",
     points: [
-      "Gudang bahan peledak wajib dijaga 24 jam oleh petugas satuan pengamanan bersertifikat.",
-      "Detonator wajib disimpan terpisah dari bahan peledak peka primer (ANFO dan dinamit).",
-      "Petugas wajib mencatat setiap penerimaan dan pengeluaran bahan peledak di buku register.",
-      "Area gudang wajib memiliki tanggul pengaman, kawat duri, dan instalasi penangkal petir teruji.",
+      "Gudang bahan peledak wajib dijaga 24 jam oleh petugas satuan pengamanan berkualifikasi.",
+      "Detonator wajib disimpan terpisah dari bahan peledak peka primer.",
+      "Petugas wajib mencatat setiap penerimaan dan pengeluaran bahan peledak di buku register resmi.",
+      "Area gudang wajib dilengkapi tanggul pengaman, pagar kawat duri, dan penangkal petir teruji.",
     ],
     citations: [
       { id: "S1", title: "Perkap/Perpol No. 17 Tahun 2017" },
-      { id: "S2", title: "Kepmen ESDM 1827 K/30/MEM/2018 Lamp. II" },
+      { id: "S2", title: "Kepmen ESDM 1827 K/30/MEM/2018" },
     ],
+    note: "Simulasi statis ilustratif. Prosedur operasional gudang diatur spesifik pada izin gudang dan SOP site.",
   },
   regulasi_dicabut: {
+    scenarioTitle: "Uji Status Regulasi Dicabut",
     question: "Apakah Permen ESDM No. 38 Tahun 2014 masih berlaku untuk pedoman SMKP?",
     emergency: null,
     body: "STATUS REGULASI: Permen ESDM No. 38 Tahun 2014 berstatus TELAH DICABUT.",
     points: [
-      "Permen ESDM No. 38 Tahun 2014 tentang Penerapan SMKP Minerba sudah tidak berlaku.",
-      "Regulasi pengganti yang sah adalah Permen ESDM No. 26 Tahun 2018 tentang Kaidah Pertambangan yang Baik.",
-      "Pedoman teknis keselamatan peledakan mengacu pada Kepmen ESDM No. 1827 K/30/MEM/2018.",
+      "Permen ESDM No. 38 Tahun 2014 tentang Penerapan SMKP Minerba sudah dicabut.",
+      "Regulasi payung yang berlaku adalah Permen ESDM No. 26 Tahun 2018.",
+      "Pedoman teknis keselamatan pertambangan & peledakan mengacu pada Kepmen ESDM No. 1827 K/30/MEM/2018.",
     ],
     citations: [
       { id: "S1", title: "Permen ESDM No. 38 Tahun 2014 (Status: Dicabut)" },
       { id: "S2", title: "Permen ESDM No. 26 Tahun 2018 (Pengganti)" },
     ],
+    note: "Contoh cara sistem menandai regulasi yang telah dicabut agar tidak dijadikan landasan hukum aktif.",
   },
   penolakan: {
-    question: "Berapa standar gaji atau bonus tahunan untuk kru peledakan pit PT Aryagans?",
+    scenarioTitle: "Uji Penolakan Otomatis (Guardrail)",
+    question: "Berapa standar gaji atau bonus tahunan untuk kru peledakan?",
     emergency: null,
-    body: "Informasi tidak ditemukan di dalam korpus dokumen teknis K3.",
+    body: "Informasi tersebut tidak ditemukan di dokumen yang tersedia.",
     points: [
-      "Sistem ini hanya melayani pertanyaan teknis K3, regulasi ESDM/Polri, dan SOP peledakan site.",
-      "Pertanyaan perihal struktur penggajian dan administrasi personalia berada di luar wewenang sistem.",
+      "Sistem membatasi jawaban hanya pada korpus dokumen teknis K3 dan regulasi yang diindeks.",
+      "Pertanyaan di luar materi keselamatan, SOP, atau regulasi ditolak secara deterministik tanpa mengarang jawaban.",
     ],
     citations: [],
+    note: "Simulasi mekanisme fail-safe: jika skor kemiripan retrieval di bawah ambang batas, bot menolak menjawab.",
   },
 };
 
 const QUICK_CHIPS = [
-  { key: "misfire", label: "Penanganan Misfire" },
-  { key: "gudang_handak", label: "Gudang Handak" },
-  { key: "regulasi_dicabut", label: "Uji Regulasi Dicabut" },
-  { key: "penolakan", label: "Uji Penolakan Bot" },
+  { key: "misfire", label: "1. Skenario Misfire" },
+  { key: "gudang_handak", label: "2. Gudang Handak" },
+  { key: "regulasi_dicabut", label: "3. Regulasi Dicabut" },
+  { key: "penolakan", label: "4. Uji Penolakan Bot" },
 ];
 
 const DISCIPLINE_PILLARS = [
@@ -119,7 +129,7 @@ const SHOWCASE_DOCUMENTS = [
   {
     badge: "Kepmen 1827/2018",
     title: "Kepmen ESDM No. 1827/2018",
-    sub: "Kaidah Teknik Pertambangan (Lampiran II)",
+    sub: "Kaidah Teknik Pertambangan (Lampiran II/III)",
     status: "Berlaku • Pedoman Teknis Peledakan",
   },
   {
@@ -135,103 +145,60 @@ const SHOWCASE_DOCUMENTS = [
     status: "Berlaku • Regulasi Payung SMKP",
   },
   {
-    badge: "SOP Internal",
-    title: "SOP-AG-BLS-04 Penanganan Misfire",
-    sub: "Prosedur Standar Lubang Ledak Mangkir",
-    status: "SOP Site PT Aryagans",
+    badge: "SOP Contoh Fiktif",
+    title: "SOP-BLS-04 Penanganan Misfire",
+    sub: "Contoh Prosedur Standar Lubang Mangkir (Fiktif)",
+    status: "SOP Sintetis Portofolio",
   },
 ];
 
 function ChatDemoWidget() {
   const [activeKey, setActiveKey] = useState("misfire");
-  const [messages, setMessages] = useState<{ role: "user" | "ai"; data: DemoAnswer }[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [currentScenario, setCurrentScenario] = useState<DemoAnswer>(SOP_DEMOS.misfire);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = useCallback(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, []);
-
-  const loadScenario = useCallback(
-    (key: string, animated = true) => {
-      const data = SOP_DEMOS[key];
-      if (!data) return;
-      setActiveKey(key);
-
-      if (!animated) {
-        setMessages([{ role: "user", data }, { role: "ai", data }]);
-        return;
-      }
-
-      setMessages((prev) => [...prev, { role: "user", data }]);
-      setIsTyping(true);
-      setTimeout(() => {
-        setIsTyping(false);
-        setMessages((prev) => [...prev, { role: "ai", data }]);
-        setTimeout(scrollToBottom, 50);
-      }, 500);
-    },
-    [scrollToBottom]
-  );
-
-  useEffect(() => {
-    loadScenario("misfire", false);
-  }, [loadScenario]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
-
-  const handleChipClick = (key: string) => {
-    loadScenario(key, true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = inputValue.trim();
-    if (!text) return;
-    setInputValue("");
-
-    const lower = text.toLowerCase();
-    let matchKey = "misfire";
-    if (lower.includes("gudang") || lower.includes("handak") || lower.includes("simpan")) matchKey = "gudang_handak";
-    else if (lower.includes("38") || lower.includes("smkp") || lower.includes("cabut") || lower.includes("lama")) matchKey = "regulasi_dicabut";
-    else if (lower.includes("gaji") || lower.includes("bonus") || lower.includes("uang") || lower.includes("luar")) matchKey = "penolakan";
-    else if (lower.includes("misfire") || lower.includes("mangkir") || lower.includes("gagal")) matchKey = "misfire";
-
-    loadScenario(matchKey, true);
+  const loadScenario = (key: string) => {
+    const data = SOP_DEMOS[key];
+    if (!data) return;
+    setActiveKey(key);
+    setCurrentScenario(data);
   };
 
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+      {/* Header Widget dengan Penanda Simulasi Statis yang Jelas */}
       <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-white">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-600 text-white">
             <Bot className="h-4 w-4" />
           </div>
           <div>
-            <span className="text-xs font-bold text-slate-900">Simulasi Rujukan K3 PT Aryagans</span>
+            <span className="text-xs font-bold text-slate-900">Simulasi Antarmuka Respons K3</span>
           </div>
         </div>
-        <span className="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-          Grounded RAG
+        <span className="rounded bg-amber-100 border border-amber-300 px-2 py-0.5 text-[10px] font-semibold text-amber-900">
+          Simulasi Statis Terpilih
         </span>
       </div>
 
+      {/* Notice Transparansi */}
+      <div className="bg-amber-50/70 border-b border-amber-200/60 px-4 py-2 text-[11px] text-amber-900 leading-tight">
+        ⚠️ <strong>Pratinjau Statis:</strong> Memperlihatkan contoh format output (darurat, sitasi, status regulasi, penolakan). <em>Bukan</em> hasil retrieval/LLM dinamis. SOP bersifat fiktif.
+      </div>
+
+      {/* Tombol Pilihan Skenario Terpandu */}
       <div className="border-b border-slate-200 bg-white px-4 py-2.5">
+        <div className="text-[10px] uppercase font-bold text-slate-400 mb-1.5">Pilih Kasus Uji Simulasi:</div>
         <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {QUICK_CHIPS.map((chip) => (
             <button
               key={chip.key}
               type="button"
-              onClick={() => handleChipClick(chip.key)}
+              onClick={() => loadScenario(chip.key)}
               className={cn(
                 "shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition",
                 activeKey === chip.key
-                  ? "border-slate-900 bg-slate-900 text-white"
+                  ? "border-slate-900 bg-slate-900 text-white shadow-sm"
                   : "border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300 hover:text-slate-900"
               )}
             >
@@ -241,88 +208,71 @@ function ChatDemoWidget() {
         </div>
       </div>
 
+      {/* Isi Dialog Skenario Terpilih */}
       <div
         ref={scrollRef}
         className="flex flex-col gap-3 overflow-y-auto bg-slate-50/50 px-4 py-4"
-        style={{ minHeight: 290, maxHeight: 330 }}
+        style={{ minHeight: 310, maxHeight: 350 }}
       >
-        {messages.map((msg, i) =>
-          msg.role === "user" ? (
-            <div
-              key={i}
-              className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-slate-900 px-3.5 py-2 text-xs font-medium text-white shadow-sm"
-            >
-              {msg.data.question}
+        <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-slate-900 px-3.5 py-2 text-xs font-medium text-white shadow-sm">
+          {currentScenario.question}
+        </div>
+
+        <div className="mr-auto max-w-[95%] rounded-2xl rounded-bl-sm border border-slate-200 bg-white p-3.5 text-xs leading-relaxed text-slate-800 shadow-sm">
+          {currentScenario.emergency && (
+            <div className="mb-2 flex items-start gap-2 rounded-lg border-l-4 border-amber-500 bg-amber-50 px-2.5 py-1.5">
+              <span className="mt-0.5 text-amber-600">{currentScenario.emergency.icon}</span>
+              <span className="text-[11px] font-bold text-amber-950">{currentScenario.emergency.text}</span>
+            </div>
+          )}
+          <p className="font-semibold text-slate-900">{currentScenario.body}</p>
+          <ul className="mt-2 space-y-1 pl-3.5">
+            {currentScenario.points.map((pt, j) => (
+              <li key={j} className="list-disc text-slate-600">
+                {pt}
+              </li>
+            ))}
+          </ul>
+          {currentScenario.citations.length > 0 ? (
+            <div className="mt-2.5 border-t border-slate-100 pt-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Rujukan Dokumen (Simulasi ID Sitasi):
+              </span>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {currentScenario.citations.map((c) => (
+                  <span
+                    key={c.id}
+                    className="inline-flex items-center gap-1 rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-700"
+                  >
+                    <strong className="text-emerald-700">[{c.id}]</strong>
+                    {c.title}
+                  </span>
+                ))}
+              </div>
             </div>
           ) : (
-            <div
-              key={i}
-              className="mr-auto max-w-[92%] rounded-2xl rounded-bl-sm border border-slate-200 bg-white p-3.5 text-xs leading-relaxed text-slate-800 shadow-sm"
-            >
-              {msg.data.emergency && (
-                <div className="mb-2 flex items-start gap-2 rounded-lg border-l-4 border-amber-500 bg-amber-50 px-2.5 py-1.5">
-                  <span className="mt-0.5 text-amber-600">{msg.data.emergency.icon}</span>
-                  <span className="text-[11px] font-bold text-amber-950">{msg.data.emergency.text}</span>
-                </div>
-              )}
-              <p className="font-semibold text-slate-900">{msg.data.body}</p>
-              <ul className="mt-2 space-y-1 pl-3.5">
-                {msg.data.points.map((pt, j) => (
-                  <li key={j} className="list-disc text-slate-600">
-                    {pt}
-                  </li>
-                ))}
-              </ul>
-              {msg.data.citations.length > 0 ? (
-                <div className="mt-2.5 border-t border-slate-100 pt-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    Rujukan Dokumen:
-                  </span>
-                  <div className="mt-1 flex flex-wrap gap-1">
-                    {msg.data.citations.map((c) => (
-                      <span
-                        key={c.id}
-                        className="inline-flex items-center gap-1 rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-700"
-                      >
-                        <strong className="text-emerald-700">[{c.id}]</strong>
-                        {c.title}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="mt-2 border-t border-slate-100 pt-1.5 text-[10px] italic text-slate-400">
-                  Tidak ada sitasi (ditolak karena di luar korpus dokumen resmi)
-                </div>
-              )}
+            <div className="mt-2 border-t border-slate-100 pt-1.5 text-[10px] italic text-slate-500">
+              Tidak ada sitasi (mekanisme penolakan bot aktif saat informasi tidak tercantum di dokumen)
             </div>
-          )
-        )}
+          )}
 
-        {isTyping && (
-          <div className="mr-auto flex items-center gap-2 rounded-full bg-white px-3 py-1.5 border border-slate-200 text-xs text-slate-500 shadow-sm">
-            <MessageLoading className="h-4 w-4 text-emerald-600" />
-            <span className="text-[11px] font-medium">Memeriksa dokumen...</span>
+          <div className="mt-2.5 rounded bg-slate-50 border border-slate-200/80 p-2 text-[10px] text-slate-500 italic">
+            📌 Catatan: {currentScenario.note}
           </div>
-        )}
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-slate-200 bg-white px-3 py-2.5">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Tanyakan SOP misfire, izin handak..."
-          className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-400 focus:bg-white"
-        />
-        <button
-          type="submit"
-          aria-label="Kirim pertanyaan"
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white transition hover:bg-slate-800"
+      {/* Footer Widget Mengarahkan ke Chat Langsung */}
+      <div className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-2.5 text-xs">
+        <span className="text-slate-500 text-[11px]">Ingin menguji pipeline RAG & LLM aktual?</span>
+        <Link
+          href="/chat"
+          className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 hover:text-emerald-800"
         >
-          <Send className="h-3.5 w-3.5" />
-        </button>
-      </form>
+          <span>Buka Mode Chat Interaktif</span>
+          <ArrowRight className="h-3 w-3" />
+        </Link>
+      </div>
     </div>
   );
 }
@@ -555,28 +505,28 @@ export default function LandingPage() {
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                Simulasi Operasional Pit
+                Simulasi Statis Lapangan
               </span>
               <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                Verifikasi Respon Sesuai Standar Operasional
+                Contoh Pratinjau Output Sesuai Standar K3
               </h2>
               <p className="mt-3 text-sm text-slate-600 leading-relaxed">
-                Pilih skenario simulasi untuk melihat cara sistem memvalidasi prosedur lubang mangkir (misfire),
-                pengamanan gudang handak, status regulasi dicabut, dan penolakan otomatis.
+                Pilih skenario simulasi di samping untuk melihat ilustrasi perilaku sistem saat menangani peringatan darurat misfire,
+                pengamanan gudang handak, penandaan regulasi dicabut, dan penolakan otomatis tanpa spekulasi.
               </p>
 
               <div className="mt-6 flex flex-col gap-3">
                 <div className="flex items-center gap-3 text-xs text-slate-700">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>SOP penanganan misfire merujuk SOP-AG-BLS-04 dan Kepmen ESDM 1827/2018.</span>
+                  <span>Kondisi darurat misfire memunculkan peringatan perimeter & waktu tunggu paling atas.</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-slate-700">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>Ketentuan pengamanan gudang handak merujuk Perpol 17/2017 dan Kepmen 1827/2018.</span>
+                  <span>SOP yang digunakan pada contoh ini adalah dokumen fiktif (SOP-BLS-04) untuk keperluan portofolio.</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-slate-700">
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>Sistem otomatis menolak menjawab jika topik berada di luar korpus keselamatan tambang.</span>
+                  <span>Sistem menolak menjawab topik di luar materi K3 untuk mencegah halusinasi berbahaya.</span>
                 </div>
               </div>
 
