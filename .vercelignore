@@ -1,3 +1,5 @@
-src/api/
 tests/
 scripts/
+.venv/
+data/raw/
+logs/
